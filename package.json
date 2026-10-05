@@ -1,0 +1,22 @@
+{
+  "name": "interntrack",
+  "version": "1.0.0",
+  "description": "InternTrack – Smart Internship Application Tracker (Zero Database)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "pdf": "node generate_pdf.js"
+  },
+  "keywords": [
+    "internship-tracker",
+    "job-tracker",
+    "student-productivity",
+    "localstorage",
+    "zero-database"
+  ],
+  "author": "Atharva Dhole",
+  "license": "MIT",
+  "dependencies": {
+    "pdfkit": "^0.20.2"
+  }
+}

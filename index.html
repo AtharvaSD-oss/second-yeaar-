@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="InternTrack – Smart Internship Application Tracker. Search internship opportunities from across the internet, apply on official platforms, and track applications with zero database.">
+  <title>InternTrack – Smart Internship Application Tracker</title>
+
+  <!-- Google Fonts (Plus Jakarta Sans & Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Application Stylesheets -->
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Ambient Aurora Lighting Blobs (Reference-inspired background) -->
+  <div class="aurora-backdrop" aria-hidden="true">
+    <div class="aurora-blob aurora-blob-1"></div>
+    <div class="aurora-blob aurora-blob-2"></div>
+    <div class="aurora-blob aurora-blob-3"></div>
+    <div class="aurora-blob aurora-blob-4"></div>
+  </div>
+
+  <!-- ====================================================================
+       TOP NAVIGATION BAR (3-PAGE APPLICATION - GLASS EFFECT)
+       ==================================================================== -->
+  <header class="app-top-nav">
+    <div class="brand-logo" onclick="App.navigateTo('search')" style="cursor: pointer;">
+      <span class="brand-icon">🎓</span>
+      <div class="brand-text">
+        <span class="brand-title">Intern<span>Track</span></span>
+        <span class="brand-sub">Smart Internship Aggregator</span>
+      </div>
+    </div>
+
+    <!-- 3 Main Numbered Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="nav-tab-btn active" data-section="search" title="Search Internships from across the web">
+        <span class="nav-num">1</span>
+        <i data-lucide="globe"></i>
+        <span>Search Internships</span>
+      </button>
+      <button class="nav-tab-btn" data-section="tracker" title="My Tracked Applications">
+        <span class="nav-num">2</span>
+        <i data-lucide="briefcase"></i>
+        <span>My Tracker</span>
+        <span class="nav-badge" id="nav-tracker-badge" style="display: none;">0</span>
+      </button>
+      <button class="nav-tab-btn" data-section="schedule" title="Upcoming Deadlines & Interviews">
+        <span class="nav-num">3</span>
+        <i data-lucide="calendar-clock"></i>
+        <span>Deadlines & Interviews</span>
+        <span class="nav-badge" id="nav-schedule-badge" style="display: none;">0</span>
+      </button>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <button class="btn btn-primary btn-sm" onclick="Applications.openAddModal()" title="Add Custom Application">
+        <i data-lucide="plus"></i>
+        <span>Add Internship</span>
+      </button>
+      <button id="theme-toggle-btn" class="btn-icon" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
+        <i id="theme-toggle-icon" data-lucide="moon"></i>
+      </button>
+      <button class="btn-icon" onclick="App.openSettingsModal()" title="Data Backup & Settings" aria-label="Settings">
+        <i data-lucide="settings"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Bottom Tab Bar (Glass Dock) -->
+  <nav class="mobile-bottom-bar">
+    <button class="mobile-tab-btn active" data-section="search">
+      <span class="mobile-tab-num">1</span>
+      <i data-lucide="globe"></i>
+      <span>Search</span>
+    </button>
+    <button class="mobile-tab-btn" data-section="tracker">
+      <span class="mobile-tab-num">2</span>
+      <i data-lucide="briefcase"></i>
+      <span>Tracker</span>
+      <span class="mobile-badge" id="mobile-tracker-badge" style="display: none;">0</span>
+    </button>
+    <button class="mobile-tab-btn" data-section="schedule">
+      <span class="mobile-tab-num">3</span>
+      <i data-lucide="calendar-clock"></i>
+      <span>Schedule</span>
+      <span class="mobile-badge" id="mobile-schedule-badge" style="display: none;">0</span>
+    </button>
+    <button class="mobile-tab-btn" onclick="Applications.openAddModal()">
+      <i data-lucide="plus-circle"></i>
+      <span>Add</span>
+    </button>
+  </nav>
+
+  <!-- ====================================================================
+       MAIN PAGE VIEWS (EXACTLY 3 PAGES)
+       ==================================================================== -->
+  <main class="main-page-container">
+
+    <!-- ==============================================================
+         PAGE 1: 🌐 SEARCH INTERNSHIPS (Across the Internet)
+         ============================================================== -->
+    <section id="view-search" class="view-section active">
+      
+      <!-- Hero Search Banner -->
+      <div class="search-hero-banner">
+        <div class="search-hero-tagline">
+          <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+          <span>Live Opportunities from Top Global & Indian Tech</span>
+        </div>
+        <h1 class="search-hero-title">Search Internships <span>Across The Web</span></h1>
+        <p class="search-hero-subtitle">
+          Collected live opportunities across Google Careers, Microsoft, Amazon, LinkedIn, Wellfound, Unstop, and top tech companies. Apply directly on their official platforms or track with 1 click.
+        </p>
+
+        <!-- Global Search Bar -->
+        <div class="hero-search-wrapper">
+          <i data-lucide="search" class="hero-search-icon"></i>
+          <input type="text" id="opps-search-input" class="hero-search-input" 
+                 placeholder="Search by job role, company name, or skills (e.g. Python, React, SDE, Remote...)"
+                 autocomplete="off">
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="cat-pills-scroll">
+          <button class="cat-pill-btn active" data-cat="all">🔥 All Roles</button>
+          <button class="cat-pill-btn" data-cat="swe">💻 Software & SDE</button>
+          <button class="cat-pill-btn" data-cat="aiml">🤖 AI & Data Science</button>
+          <button class="cat-pill-btn" data-cat="web">🌐 Frontend & Fullstack</button>
+          <button class="cat-pill-btn" data-cat="backend">☁️ Backend & Cloud</button>
+          <button class="cat-pill-btn" data-cat="design">🎨 UI/UX & Design</button>
+          <button class="cat-pill-btn" data-cat="remote">🌍 Remote Only</button>
+        </div>
+      </div>
+
+      <!-- Secondary Filters Bar -->
+      <div class="opp-filters-bar">
+        <div class="opp-filters-left">
+          <span class="text-sm font-semibold text-muted">Filter by:</span>
+
+          <!-- Region Filter -->
+          <select id="opps-region-filter" class="filter-select">
+            <option value="all">🌐 All Regions</option>
+            <option value="India">🇮🇳 India</option>
+            <option value="United States">🇺🇸 United States</option>
+            <option value="Europe">🇪🇺 Europe / UK</option>
+            <option value="Remote">🌍 Worldwide Remote</option>
+          </select>
+
+          <!-- State Filter -->
+          <select id="opps-state-filter" class="filter-select">
+            <option value="all">📍 All States / Cities</option>
+          </select>
+
+          <!-- Work Mode Filter -->
+          <select id="opps-mode-filter" class="filter-select">
+            <option value="all">All Work Modes</option>
+            <option value="Remote">Remote</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="On-site">On-site</option>
+          </select>
+
+          <!-- Platform Filter -->
+          <select id="opps-platform-filter" class="filter-select">
+            <option value="all">All Platforms</option>
+            <option value="Google Careers">Google Careers</option>
+            <option value="Microsoft Careers">Microsoft Careers</option>
+            <option value="Amazon Jobs">Amazon Jobs</option>
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="Wellfound">Wellfound (AngelList)</option>
+            <option value="Unstop">Unstop</option>
+            <option value="Internshala">Internshala</option>
+            <option value="Company Portal">Company Portal</option>
+          </select>
+
+          <span id="opps-count-badge" class="badge badge-info">24 Openings Found</span>
+        </div>
+
+        <div>
+          <button class="btn btn-outline btn-sm" onclick="App.openTrackCustomLinkModal()">
+            <i data-lucide="link"></i>
+            <span>+ Track Any External Link</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Opportunities Cards Grid -->
+      <div id="opps-grid-container" class="opps-grid">
+        <!-- Rendered dynamically via js/opportunities.js -->
+      </div>
+    </section>
+
+    <!-- ==============================================================
+         PAGE 2: 📋 MY APPLICATION TRACKER
+         ============================================================== -->
+    <section id="view-tracker" class="view-section">
+      
+      <!-- Indigo-to-Violet Gradient Tracker Hero -->
+      <div class="tracker-hero-banner">
+        <div class="tracker-hero-glow"></div>
+        <div class="tracker-hero-inner">
+          <div class="hero-badge">
+            <span class="badge-dot pulse"></span>
+            <span>Zero-Database Architecture • 100% Client-Side LocalStorage</span>
+          </div>
+          <h1 class="tracker-hero-title">
+            <span id="tracker-greeting">Good evening</span>, <span class="gradient-text">Student 👋</span>
+          </h1>
+          <p class="tracker-hero-subtitle">
+            Track your internship journey from application to offer. Never miss deadlines, prepare for interviews, and manage all your opportunities from one modern dashboard.
+          </p>
+          <div class="tracker-hero-actions">
+            <button class="btn btn-primary" onclick="Applications.openAddModal()" title="Add a new internship application">
+              <i data-lucide="plus"></i>
+              <span>Add Internship</span>
+            </button>
+            <button class="btn btn-outline" onclick="App.openTrackCustomLinkModal()" title="Track external link from LinkedIn, etc.">
+              <i data-lucide="link"></i>
+              <span>Track External Link</span>
+            </button>
+            <button class="btn btn-outline" onclick="App.openSettingsModal()" title="Export/Import data & demo records">
+              <i data-lucide="sliders"></i>
+              <span>Backup & Demo Data</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tracker KPI Summary Cards -->
+      <div class="dashboard-kpi-grid">
+        <div class="kpi-card" onclick="Applications.setFilterStatus('All')" style="cursor: pointer;" title="Show all applications">
+          <div class="kpi-card-info">
+            <span class="kpi-title">Total Applications</span>
+            <span class="kpi-number" id="stat-total-apps">0</span>
+            <span class="kpi-hint">Click to show all</span>
+          </div>
+          <div class="kpi-icon-box kpi-icon-apps">
+            <i data-lucide="briefcase"></i>
+          </div>
+        </div>
+
+        <div class="kpi-card" onclick="Applications.setFilterStatus('Under Review')" style="cursor: pointer;" title="Filter by In Review / Applied">
+          <div class="kpi-card-info">
+            <span class="kpi-title">In Review / Applied</span>
+            <span class="kpi-number" id="stat-review-apps">0</span>
+            <span class="kpi-hint">Click to filter</span>
+          </div>
+          <div class="kpi-icon-box kpi-icon-followups">
+            <i data-lucide="clock"></i>
+          </div>
+        </div>
+
+        <div class="kpi-card" onclick="Applications.setFilterStatus('Interview')" style="cursor: pointer;" title="Filter by Interview stages">
+          <div class="kpi-card-info">
+            <span class="kpi-title">Interviews</span>
+            <span class="kpi-number" id="stat-interviews">0</span>
+            <span class="kpi-hint">Click to filter</span>
+          </div>
+          <div class="kpi-icon-box kpi-icon-interviews">
+            <i data-lucide="video"></i>
+          </div>
+        </div>
+
+        <div class="kpi-card" onclick="Applications.setFilterStatus('Selected')" style="cursor: pointer;" title="Filter by Offers Received">
+          <div class="kpi-card-info">
+            <span class="kpi-title">Offers Received 🏆</span>
+            <span class="kpi-number" id="stat-offers">0</span>
+            <span class="kpi-hint">Click to filter offers</span>
+          </div>
+          <div class="kpi-icon-box kpi-icon-offers">
+            <i data-lucide="award"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search & Filters Toolbar -->
+      <div class="filters-card">
+        <div class="filters-toolbar">
+          <!-- Search input -->
+          <div class="filter-search-box">
+            <i data-lucide="search"></i>
+            <input type="text" id="apps-search-input" placeholder="Search company, role, skill, location...">
+          </div>
+
+          <!-- Status filter -->
+          <select id="apps-filter-status" class="filter-select">
+            <option value="All">All Statuses</option>
+            <option value="Saved">Saved</option>
+            <option value="Applied">Applied</option>
+            <option value="Under Review">Under Review</option>
+            <option value="Interview">Interview</option>
+            <option value="Selected">Selected (Offer)</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Withdrawn">Withdrawn</option>
+          </select>
+
+          <!-- Work Mode filter -->
+          <select id="apps-filter-workmode" class="filter-select">
+            <option value="All">All Work Modes</option>
+            <option value="Remote">Remote</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="On-site">On-site</option>
+          </select>
+
+          <!-- Priority filter -->
+          <select id="apps-filter-priority" class="filter-select">
+            <option value="All">All Priorities</option>
+            <option value="High">High Priority</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+
+          <!-- Sort select -->
+          <select id="apps-sort-by" class="filter-select">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="deadline">Upcoming Deadline</option>
+            <option value="company">Company Name (A-Z)</option>
+            <option value="status">Status</option>
+          </select>
+
+          <!-- Favorites toggle -->
+          <button id="apps-filter-fav" class="btn-filter-fav" title="Favorites only">
+            <i data-lucide="star"></i>
+            <span>Favorites</span>
+          </button>
+
+          <!-- View Mode (Grid / List) -->
+          <div class="view-mode-toggle">
+            <button id="view-grid-btn" class="view-btn active" title="Grid View">
+              <i data-lucide="grid"></i>
+            </button>
+            <button id="view-list-btn" class="view-btn" title="List View">
+              <i data-lucide="list"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="filters-footer">
+          <span id="apps-count-badge" class="results-count">0 of 0</span>
+          <button id="apps-reset-filters" class="btn-link text-xs">Reset Filters</button>
+        </div>
+      </div>
+
+      <!-- Applications Container (Grid / List) -->
+      <div id="applications-container">
+        <!-- Rendered via js/applications.js -->
+      </div>
+    </section>
+
+    <!-- ==============================================================
+         PAGE 3: ⏰ DEADLINES & INTERVIEWS
+         ============================================================== -->
+    <section id="view-schedule" class="view-section">
+      
+      <!-- Indigo-to-Violet Gradient Schedule Hero -->
+      <div class="tracker-hero-banner schedule-hero-banner">
+        <div class="tracker-hero-glow"></div>
+        <div class="tracker-hero-inner">
+          <div class="hero-badge">
+            <span class="badge-dot pulse"></span>
+            <span>Automated Countdowns & Multi-Round Interviews</span>
+          </div>
+          <h1 class="tracker-hero-title">
+            Upcoming Deadlines & <span class="gradient-text">Interviews</span> ⏰
+          </h1>
+          <p class="tracker-hero-subtitle">
+            Never miss an application closing date. Track technical, coding, HR, and managerial rounds with direct 1-click meeting join links.
+          </p>
+          <div class="tracker-hero-actions">
+            <button class="btn btn-primary" onclick="DeadlinesInterviews.openScheduleModal()">
+              <i data-lucide="calendar-plus"></i>
+              <span>Schedule Interview Round</span>
+            </button>
+            <button class="btn btn-outline" onclick="Applications.openAddModal()">
+              <i data-lucide="plus"></i>
+              <span>Add Application Deadline</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 1: Upcoming Application Deadlines -->
+      <div class="schedule-section-card">
+        <div class="schedule-header">
+          <div class="schedule-title-group">
+            <i data-lucide="clock" class="text-warning"></i>
+            <div>
+              <h3>Upcoming Application Deadlines</h3>
+              <p class="text-xs text-muted">Automated countdowns based on target submission deadlines.</p>
+            </div>
+          </div>
+        </div>
+        <div id="schedule-deadlines-container">
+          <!-- Rendered via js/deadlines-interviews.js -->
+        </div>
+      </div>
+
+      <!-- Section 2: Scheduled Interview Rounds -->
+      <div class="schedule-section-card">
+        <div class="schedule-header">
+          <div class="schedule-title-group">
+            <i data-lucide="video" class="text-purple"></i>
+            <div>
+              <h3>Scheduled Interview Rounds</h3>
+              <p class="text-xs text-muted">Chronological timeline of HR, technical, and coding rounds.</p>
+            </div>
+          </div>
+          <button class="btn btn-sm btn-outline" onclick="DeadlinesInterviews.openScheduleModal()">
+            <i data-lucide="plus"></i> Schedule Round
+          </button>
+        </div>
+        <div id="schedule-interviews-container">
+          <!-- Rendered via js/deadlines-interviews.js -->
+        </div>
+      </div>
+
+      <!-- Section 3: Hiring Pipeline & Success Funnel -->
+      <div class="schedule-section-card">
+        <div class="schedule-header">
+          <div class="schedule-title-group">
+            <i data-lucide="trending-up" class="text-success"></i>
+            <div>
+              <h3>Application Funnel & Conversion Rates</h3>
+              <p class="text-xs text-muted">Track your interview callback rate and offer conversion percentage.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-kpi-grid mb-4">
+          <div class="kpi-card">
+            <div class="kpi-card-info">
+              <span class="kpi-title">Interview Callback Rate</span>
+              <span class="kpi-number text-primary" id="stat-interview-rate">0.0%</span>
+              <span class="kpi-hint">Interviews / Total Applications</span>
+            </div>
+            <div class="kpi-icon-box kpi-icon-interviews"><i data-lucide="video"></i></div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-card-info">
+              <span class="kpi-title">Offer Selection Rate</span>
+              <span class="kpi-number text-success" id="stat-selection-rate">0.0%</span>
+              <span class="kpi-hint">Offers / Total Applications</span>
+            </div>
+            <div class="kpi-icon-box kpi-icon-offers"><i data-lucide="award"></i></div>
+          </div>
+        </div>
+
+        <!-- Funnel visual progress bars -->
+        <div class="funnel-container" id="funnel-bars-container">
+          <!-- Rendered via js/deadlines-interviews.js -->
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ====================================================================
+       MODALS
+       ==================================================================== -->
+
+  <!-- Modal 1: Add / Edit Internship Application -->
+  <div id="app-edit-modal" class="modal-overlay">
+    <div class="modal-container modal-lg">
+      <div class="modal-header">
+        <h3 id="app-modal-title" class="modal-title">Add Internship Application</h3>
+        <button type="button" class="modal-close-btn">&times;</button>
+      </div>
+
+      <form id="app-form">
+        <div class="modal-body">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="form-company">Company Name <span class="req">*</span></label>
+              <input type="text" id="form-company" class="form-input" placeholder="e.g. Google, Microsoft, TCS" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-role">Job Role <span class="req">*</span></label>
+              <input type="text" id="form-role" class="form-input" placeholder="e.g. Software Engineering Intern" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="form-location">Location / City</label>
+              <input type="text" id="form-location" class="form-input" placeholder="e.g. Bengaluru, Mumbai, San Francisco">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-work-mode">Work Mode</label>
+              <select id="form-work-mode" class="form-select">
+                <option value="Remote">Remote</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="On-site">On-site</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="form-region">Region / Country</label>
+              <select id="form-region" class="form-select">
+                <option value="India">🇮🇳 India</option>
+                <option value="United States">🇺🇸 United States</option>
+                <option value="Europe">🇪🇺 Europe / UK</option>
+                <option value="Remote">🌍 Worldwide Remote</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-state">State / Province</label>
+              <input type="text" id="form-state" class="form-input" placeholder="e.g. Karnataka, Maharashtra, California">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="form-application-date">Application Date</label>
+              <input type="date" id="form-application-date" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-deadline">Application Deadline</label>
+              <input type="date" id="form-deadline" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="form-stipend">Stipend / Salary</label>
+              <input type="text" id="form-stipend" class="form-input" placeholder="e.g. ₹40,000/month or $50/hr">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-duration">Duration</label>
+              <input type="text" id="form-duration" class="form-input" placeholder="e.g. 3 months, 6 months">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="form-url">Application / Job URL</label>
+            <input type="url" id="form-url" class="form-input" placeholder="https://careers.company.com/job/123">
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="form-status">Application Status</label>
+              <select id="form-status" class="form-select">
+                <option value="Saved">Saved</option>
+                <option value="Applied" selected>Applied</option>
+                <option value="Under Review">Under Review</option>
+                <option value="Interview">Interview</option>
+                <option value="Selected">Selected (Offer)</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Withdrawn">Withdrawn</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-priority">Priority</label>
+              <select id="form-priority" class="form-select">
+                <option value="High">High</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="Low">Low</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Skills Required Chip Input -->
+          <div class="form-group">
+            <label class="form-label">Skills Required (Press Enter or comma to add)</label>
+            <div id="form-skills-container" class="skills-input-box"></div>
+            <input type="hidden" id="form-skills-hidden">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="form-followup-date">Follow-up Reminder Date</label>
+            <input type="date" id="form-followup-date" class="form-input">
+          </div>
+
+          <!-- Interview Details (Optional) -->
+          <div class="card p-3 mb-3" style="background-color: var(--bg-card-subtle); border-left: 3px solid var(--purple);">
+            <div class="d-flex align-items-center justify-between mb-2">
+              <span class="text-xs font-bold text-purple uppercase tracking-wider">
+                <i data-lucide="video" style="width: 13px; height: 13px; display: inline-block;"></i> Interview Details (Optional)
+              </span>
+              <span class="text-xs text-muted">Fill if interview is scheduled</span>
+            </div>
+            
+            <div class="form-grid-2">
+              <div class="form-group mb-2">
+                <label class="form-label text-xs" for="form-interview-date">Interview Date</label>
+                <input type="date" id="form-interview-date" class="form-input">
+              </div>
+              <div class="form-group mb-2">
+                <label class="form-label text-xs" for="form-interview-time">Interview Time</label>
+                <input type="time" id="form-interview-time" class="form-input">
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group mb-2">
+                <label class="form-label text-xs" for="form-interview-round">Round Type</label>
+                <select id="form-interview-round" class="form-select">
+                  <option value="HR">HR Round</option>
+                  <option value="Technical" selected>Technical Round</option>
+                  <option value="Coding">Coding Round</option>
+                  <option value="Managerial">Managerial Round</option>
+                  <option value="Final">Final Round</option>
+                </select>
+              </div>
+              <div class="form-group mb-2">
+                <label class="form-label text-xs" for="form-interview-meeting">Meeting Link</label>
+                <input type="url" id="form-interview-meeting" class="form-input" placeholder="https://meet.google.com/xyz">
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group mb-0">
+                <label class="form-label text-xs" for="form-interview-interviewer">Interviewer Name / Role</label>
+                <input type="text" id="form-interview-interviewer" class="form-input" placeholder="e.g. Lead Engineer, Hiring Manager">
+              </div>
+              <div class="form-group mb-0">
+                <label class="form-label text-xs" for="form-interview-notes">Prep Notes</label>
+                <input type="text" id="form-interview-notes" class="form-input" placeholder="e.g. Brush up DSA, System Design">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="form-notes">General Notes</label>
+            <textarea id="form-notes" class="form-textarea" rows="3" placeholder="Referral details, hiring portal login credentials, recruiter notes..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Application</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Full Internship Details View -->
+  <div id="details-modal" class="modal-overlay">
+    <div class="modal-container modal-lg">
+      <div class="modal-header">
+        <div class="d-flex align-items-center gap-3">
+          <button id="details-fav-star" class="btn-fav-star" title="Toggle Favorite">
+            <i data-lucide="star"></i>
+          </button>
+          <div>
+            <h3 id="details-company" class="modal-title">Company Name</h3>
+            <p id="details-role" class="text-sm text-muted">Software Engineer Intern</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
+          <div id="details-status-badge"></div>
+          <div id="details-priority-badge"></div>
+          <div id="details-workmode-badge"></div>
+        </div>
+
+        <!-- Meta Grid -->
+        <div class="details-meta-grid">
+          <div class="details-meta-item">
+            <span class="meta-title">Location</span>
+            <span id="details-location" class="meta-val">Remote</span>
+          </div>
+          <div class="details-meta-item">
+            <span class="meta-title">Region & State</span>
+            <span id="details-region-state" class="meta-val">--</span>
+          </div>
+          <div class="details-meta-item">
+            <span class="meta-title">Stipend</span>
+            <span id="details-stipend" class="meta-val">₹40,000/month</span>
+          </div>
+          <div class="details-meta-item">
+            <span class="meta-title">Duration</span>
+            <span id="details-duration" class="meta-val">6 months</span>
+          </div>
+          <div class="details-meta-item">
+            <span class="meta-title">Applied Date</span>
+            <span id="details-applied-date" class="meta-val">05 Oct 2026</span>
+          </div>
+          <div class="details-meta-item">
+            <span class="meta-title">Application Deadline</span>
+            <span id="details-deadline" class="meta-val">20 Oct 2026</span>
+          </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="mb-3">
+          <span class="meta-title d-block mb-1">Required Skills:</span>
+          <div id="details-skills" class="skills-list"></div>
+        </div>
+
+        <!-- Interview Information Card -->
+        <div id="details-interview-card" class="card mb-3" style="border-left: 4px solid var(--purple); background-color: var(--bg-card-subtle); display: none;">
+          <div class="d-flex align-items-center justify-between mb-2">
+            <h4 class="font-bold text-sm"><i data-lucide="video" class="text-purple"></i> Scheduled Interview</h4>
+            <span id="details-interview-round" class="badge badge-purple">Technical Round</span>
+          </div>
+          <p class="text-sm"><strong>Date & Time:</strong> <span id="details-interview-time">--</span></p>
+          <p class="text-sm"><strong>Interviewer:</strong> <span id="details-interview-interviewer">--</span></p>
+          <p class="text-sm mt-1"><strong>Prep Notes:</strong> <span id="details-interview-notes" class="text-muted">--</span></p>
+          <div class="mt-2">
+            <a id="details-interview-join-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-xs btn-primary">
+              <i data-lucide="video"></i> Join Meeting
+            </a>
+          </div>
+        </div>
+
+        <!-- Follow-up Card -->
+        <div id="details-followup-card" class="card mb-3" style="border-left: 4px solid var(--warning); background-color: var(--bg-card-subtle); display: none;">
+          <h4 class="font-bold text-sm mb-1"><i data-lucide="bell" class="text-warning"></i> Follow-up Scheduled</h4>
+          <p class="text-sm">Reminder Date: <strong id="details-followup-date">--</strong></p>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="mb-3">
+          <span class="meta-title d-block mb-1">Application Notes:</span>
+          <div id="details-notes" class="p-3 card" style="background-color: var(--bg-card-subtle); font-size: 0.875rem;"></div>
+        </div>
+
+        <!-- Quick Status Changer -->
+        <div class="d-flex align-items-center gap-2 mt-4 pt-3" style="border-top: 1px solid var(--border-color);">
+          <span class="text-sm font-semibold">Change Status:</span>
+          <select id="details-quick-status" class="filter-select">
+            <option value="Saved">Saved</option>
+            <option value="Applied">Applied</option>
+            <option value="Under Review">Under Review</option>
+            <option value="Interview">Interview</option>
+            <option value="Selected">Selected</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Withdrawn">Withdrawn</option>
+          </select>
+
+          <a id="details-app-url-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline ml-auto">
+            <i data-lucide="external-link"></i> Open Application Link
+          </a>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="details-delete-btn" class="btn btn-outline-danger btn-sm">
+          <i data-lucide="trash-2"></i> Delete
+        </button>
+        <button id="details-schedule-interview-btn" class="btn btn-outline btn-sm">
+          <i data-lucide="video"></i> Schedule Interview
+        </button>
+        <button id="details-edit-btn" class="btn btn-primary btn-sm">
+          <i data-lucide="edit-2"></i> Edit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Quick Schedule Interview Modal -->
+  <div id="interview-schedule-modal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Schedule Interview Round</h3>
+          <p class="text-xs text-muted">Attach date, time, and meeting link to an application</p>
+        </div>
+        <button type="button" class="modal-close-btn">&times;</button>
+      </div>
+
+      <form id="interview-schedule-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="schedule-app-select">Select Application <span class="req">*</span></label>
+            <select id="schedule-app-select" class="form-select" required></select>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="sched-interview-date">Interview Date <span class="req">*</span></label>
+              <input type="date" id="sched-interview-date" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sched-interview-time">Interview Time</label>
+              <input type="time" id="sched-interview-time" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="sched-interview-round">Round Type</label>
+              <select id="sched-interview-round" class="form-select">
+                <option value="HR">HR</option>
+                <option value="Technical" selected>Technical</option>
+                <option value="Coding">Coding</option>
+                <option value="Managerial">Managerial</option>
+                <option value="Final">Final</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sched-interview-link">Meeting Link (Google Meet / Zoom / Teams)</label>
+              <input type="url" id="sched-interview-link" class="form-input" placeholder="https://meet.google.com/xyz">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sched-interview-interviewer">Interviewer Name / Role</label>
+            <input type="text" id="sched-interview-interviewer" class="form-input" placeholder="e.g. John Doe, Senior Staff SWE">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sched-interview-notes">Round Notes & Prep Topics</label>
+            <textarea id="sched-interview-notes" class="form-textarea" rows="3" placeholder="Key topics: Data Structures, System Design, behavioral questions..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Interview</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: Settings & Data Backup -->
+  <div id="settings-modal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title"><i data-lucide="settings"></i> Settings & Data Backup</h3>
+        <button type="button" class="modal-close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="card p-3 mb-3" style="background-color: var(--bg-card-subtle);">
+          <h4 class="font-bold text-sm mb-1">📄 Project Documentation & Architecture Guide</h4>
+          <p class="text-xs text-muted mb-3">Download the official 3-page project PDF summarizing the problem statement, zero-DB architecture, and presentation viva highlights.</p>
+          <a href="InternTrack_Project_Guide.pdf" download="InternTrack_Project_Guide.pdf" class="btn btn-primary btn-sm" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+            <i data-lucide="file-text"></i> Download Project Guide (PDF)
+          </a>
+        </div>
+
+        <div class="card p-3 mb-3" style="background-color: var(--bg-card-subtle);">
+          <h4 class="font-bold text-sm mb-1">📦 Export / Backup Data</h4>
+          <p class="text-xs text-muted mb-3">Download your complete internship tracker as a JSON file.</p>
+          <button id="export-data-btn" class="btn btn-outline btn-sm">
+            <i data-lucide="download"></i> Export Data (JSON)
+          </button>
+        </div>
+
+        <div class="card p-3 mb-3" style="background-color: var(--bg-card-subtle);">
+          <h4 class="font-bold text-sm mb-1">📥 Import Data Backup</h4>
+          <p class="text-xs text-muted mb-2">Upload a previously exported JSON backup file.</p>
+          <input type="file" id="import-file-input" accept=".json" class="form-input" style="padding: 0.4rem; font-size: 0.8rem;">
+        </div>
+
+        <div class="card p-3 mb-3" style="background-color: var(--bg-card-subtle);">
+          <h4 class="font-bold text-sm mb-1">✨ Load Sample Demo Internships</h4>
+          <p class="text-xs text-muted mb-2">Populate realistic demo records (Google, Microsoft, TCS, Infosys, etc.) with active deadlines.</p>
+          <button id="load-demo-btn" class="btn btn-outline btn-sm">
+            <i data-lucide="sparkles"></i> Load Realistic Demo Data
+          </button>
+        </div>
+
+        <div class="card p-3" style="background-color: rgba(220, 38, 38, 0.05); border: 1px solid var(--danger-border);">
+          <h4 class="font-bold text-sm text-danger mb-1">⚠️ Reset & Delete All Applications</h4>
+          <p class="text-xs text-muted mb-2">Wipe all stored internships from browser LocalStorage.</p>
+          <button id="clear-all-data-btn" class="btn btn-outline-danger btn-sm">
+            <i data-lucide="trash-2"></i> Delete All Applications
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-close-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: Track Any Custom Web Link -->
+  <div id="track-custom-link-modal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Track External Internship</h3>
+          <p class="text-xs text-muted">Paste any internship opportunity found on LinkedIn, Reddit, or elsewhere.</p>
+        </div>
+        <button type="button" class="modal-close-btn">&times;</button>
+      </div>
+
+      <form id="custom-link-track-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="custom-link-company">Company Name <span class="req">*</span></label>
+            <input type="text" id="custom-link-company" class="form-input" placeholder="e.g. Swiggy, Zepto, OpenAI" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="custom-link-role">Job Title / Role <span class="req">*</span></label>
+            <input type="text" id="custom-link-role" class="form-input" placeholder="e.g. Frontend Engineer Intern" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="custom-link-url">Internship Application Link</label>
+            <input type="url" id="custom-link-url" class="form-input" placeholder="https://careers.example.com/apply">
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="custom-link-region">Region / Country</label>
+              <select id="custom-link-region" class="form-select">
+                <option value="India">🇮🇳 India</option>
+                <option value="United States">🇺🇸 United States</option>
+                <option value="Europe">🇪🇺 Europe / UK</option>
+                <option value="Remote">🌍 Worldwide Remote</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="custom-link-state">State / Province</label>
+              <input type="text" id="custom-link-state" class="form-input" placeholder="e.g. Karnataka, California, Remote">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="custom-link-stipend">Estimated Stipend</label>
+              <input type="text" id="custom-link-stipend" class="form-input" placeholder="e.g. ₹50,000/month">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="custom-link-deadline">Application Deadline</label>
+              <input type="date" id="custom-link-deadline" class="form-input">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save to My Tracker</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 6: Confirm Deletion Modal -->
+  <div id="confirm-delete-modal" class="modal-overlay">
+    <div class="modal-container modal-sm">
+      <div class="modal-header">
+        <h3 class="modal-title text-danger"><i data-lucide="alert-triangle"></i> Confirm Deletion</h3>
+        <button type="button" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="delete-modal-text" class="text-sm">Are you sure you want to delete this application?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-close-btn">Cancel</button>
+        <button id="delete-modal-confirm-btn" class="btn btn-outline-danger">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications Container -->
+  <div id="toast-container"></div>
+
+  <!-- ====================================================================
+       SCRIPTS (ZERO DATABASE - 100% CLIENT-SIDE LOCALSTORAGE)
+       ==================================================================== -->
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/opportunities.js"></script>
+  <script src="js/applications.js"></script>
+  <script src="js/deadlines-interviews.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
