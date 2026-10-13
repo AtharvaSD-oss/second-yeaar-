@@ -19,8 +19,8 @@ const writeStream = fs.createWriteStream(outputPath);
 doc.pipe(writeStream);
 
 // Colors
-const PRIMARY = '#4F46E5';     // Indigo
-const SECONDARY = '#7C3AED';   // Purple
+const PRIMARY = '#2563EB';     // Indigo
+const SECONDARY = '#0284C7';   // Purple
 const DARK = '#0F172A';        // Slate 900
 const TEXT = '#334155';        // Slate 700
 const MUTED = '#64748B';       // Slate 500
@@ -42,7 +42,7 @@ function drawHeader(title, subtitle) {
   doc.rect(45, 40, 6, 68).fill(PRIMARY);
 
   doc.fillColor(PRIMARY).fontSize(20).font('Helvetica-Bold')
-     .text('🎓 InternTrack', 60, 48);
+     .text('InternTrack', 60, 48);
 
   doc.fillColor(MUTED).fontSize(9).font('Helvetica')
      .text('Smart Internship Application Tracker  |  100% Client-Side  |  Zero Database', 60, 72);
@@ -53,18 +53,18 @@ function drawHeader(title, subtitle) {
   doc.y = 120;
 }
 
-function drawSectionHeading(title, icon = '📌') {
+function drawSectionHeading(title) {
   const currentY = doc.y;
   if (currentY > 730) {
     doc.addPage();
   }
   
   const y = doc.y;
-  doc.rect(45, y, contentWidth, 24).fill('#EEF2FF');
+  doc.rect(45, y, contentWidth, 24).fill('#EFF6FF');
   doc.rect(45, y, 4, 24).fill(PRIMARY);
   
   doc.fillColor(PRIMARY).fontSize(11).font('Helvetica-Bold')
-     .text(`${icon}  ${title.toUpperCase()}`, 55, y + 6);
+     .text(`${title.toUpperCase()}`, 55, y + 6);
   
   doc.y = y + 32;
 }
@@ -128,10 +128,10 @@ function drawCard(title, items, accentColor = PRIMARY) {
 
 drawHeader();
 
-drawSectionHeading('1. Project Overview & Problem Statement', '🎯');
+drawSectionHeading('1. Project Overview & Problem Statement', '');
 drawParagraph('InternTrack is a modern, responsive web application engineered for college students and freshers to discover live internships across the web and manage their entire application lifecycle from a single, high-performance dashboard. Applying to dozens of internships across LinkedIn, company career portals, and job boards often leads to missed deadlines, lost links, and forgotten interview schedules. InternTrack centralizes the entire journey without requiring sign-up friction or external databases.');
 
-drawSectionHeading('2. Core Philosophy: Zero Database & Instant Local Storage', '⚡');
+drawSectionHeading('2. Core Philosophy: Zero Database & Instant Local Storage');
 drawParagraph('Unlike traditional web apps that rely on slow cloud databases (MongoDB, MySQL, PostgreSQL, Firebase, Supabase), InternTrack is built on 100% Client-Side LocalStorage:');
 
 drawBullet('Zero Server Setup', 'Runs instantly in any modern browser without configuring database credentials or cloud servers.');
@@ -139,17 +139,17 @@ drawBullet('Total Student Privacy', 'Application links, resumes, stipends, and n
 drawBullet('Full Offline Capability', 'Students can view, edit, organize, and prepare for interviews even without an active internet connection.');
 drawBullet('Instant Performance', 'Zero network latency; instant search filtering, sorting, and status updates within milliseconds.');
 
-drawSectionHeading('3. The 3-Page Focused Web Application Architecture', '📐');
+drawSectionHeading('3. The 3-Page Focused Web Application Architecture', '');
 drawParagraph('To maintain a clean, uncluttered user experience, the entire application is organized into exactly three dedicated pages:');
 
-drawCard('Page 1: 🌐 Search Internships Across The Web', [
+drawCard('Page 1: Search Internships Across The Web', [
   { label: 'Internet Aggregator', val: 'Curated live openings collected from Google Careers, Microsoft, Amazon, LinkedIn, Wellfound, Unstop, and Internshala.' },
   { label: 'Region & State Search', val: 'Search and filter openings by territory (India, United States, Worldwide Remote, Europe) and specific states/cities (Karnataka, Maharashtra, Telangana, Delhi NCR, California, etc.).' },
   { label: 'Role Categories', val: 'Quick filters for Software/SDE, AI/ML, Frontend/Fullstack, Cloud/DevOps, UI/UX Design, and Remote.' },
   { label: 'Actionable Links', val: 'Direct "Apply on Official Site" link + 1-Click "+ Track in App" to import into the user private tracker.' }
 ], PRIMARY);
 
-drawCard('Page 2: 📋 My Application Tracker', [
+drawCard('Page 2: My Application Tracker', [
   { label: 'Lifecycle Workspace', val: 'Complete CRUD management (Add, View Details, Edit, Delete, Bookmark Favorites).' },
   { label: 'Interactive KPI Cards', val: 'Top summary cards (Total Applications, In Review, Interviews, Offers) with click-to-filter capability.' },
   { label: '7 Status Badges', val: 'Distinct color badges: Saved (Orange), Applied (Yellow), Under Review (Blue), Interview (Purple), Selected / Offer (Green), Rejected (Red), Withdrawn (Gray).' },
@@ -168,7 +168,7 @@ drawCard('Page 3: ⏰ Deadlines & Interviews Hub', [
   { label: 'Hiring Conversion Funnel', val: 'Visual progress bar tracking the student success pipeline: Saved -> Applied -> Review -> Interview -> Offers.' }
 ], INFO);
 
-drawSectionHeading('4. Key Features & Functional Modules', '🚀');
+drawSectionHeading('4. Key Features & Functional Modules', '');
 
 drawSubheading('A. Hierarchical Region & State Filtering');
 drawParagraph('Students can filter opportunities by country/region and drill down into specific technology hubs:');
@@ -197,7 +197,7 @@ drawBullet('Reset & Clear Data', 'Secure two-step confirmation dialog to safely 
 // =========================================================================
 doc.addPage();
 
-drawSectionHeading('5. Technical Stack & Architecture Diagram', '💻');
+drawSectionHeading('5. Technical Stack & Architecture Diagram', '');
 
 drawParagraph('InternTrack is built strictly with modern web standards without heavy frameworks or build toolchains:');
 
@@ -237,11 +237,11 @@ files.forEach((f, idx) => {
 
 doc.y = rowY + 12;
 
-drawSectionHeading('6. How to Run Locally', '⚙️');
+drawSectionHeading('6. How to Run Locally', '️');
 drawBullet('Method 1 (Local Node Server)', 'Open terminal in the project directory and run: "node server.js". Then open "http://localhost:3000" in any browser.');
 drawBullet('Method 2 (Direct File Open)', 'InternTrack is 100% client-side; double-clicking "index.html" in Chrome, Edge, Safari, or Firefox opens the app immediately with zero installations.');
 
-drawSectionHeading('7. Key Viva / Presentation Highlights', '🎓');
+drawSectionHeading('7. Key Viva / Presentation Highlights', '');
 drawBullet('Why No Database?', 'Eliminates server hosting costs, eliminates downtime, prevents sensitive student resume/job data from leaking to third-party databases, and guarantees sub-millisecond response times.');
 drawBullet('Why Vanilla JS?', 'Zero framework bloat (no React/Angular overhead), instant initial load time (<100ms), easy code maintainability, and full portability across all browsers.');
 drawBullet('Real-world Utility', 'Directly solves student placement stress by combining external internship discovery with personal application tracking, automated deadline alerts, and 1-click meeting join links.');

@@ -34,14 +34,10 @@ const server = http.createServer((req, res) => {
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {
-      // Serve custom 404.html page if available
       const notFoundPath = path.join(ROOT_DIR, '404.html');
       fs.readFile(notFoundPath, (err404, data404) => {
         if (!err404 && data404) {
-          res.writeHead(404, {
-            'Content-Type': 'text/html; charset=UTF-8',
-            'Access-Control-Allow-Origin': '*'
-          });
+          res.writeHead(404, { 'Content-Type': 'text/html; charset=UTF-8', 'Access-Control-Allow-Origin': '*' });
           res.end(data404);
         } else {
           res.writeHead(404, { 'Content-Type': 'text/plain' });

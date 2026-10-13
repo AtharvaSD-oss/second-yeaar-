@@ -299,7 +299,7 @@ const Opportunities = {
         applyUrl: 'https://razorpay.com/jobs/',
         deadline: getDeadline(21),
         deadlineDays: 21,
-        description: 'Work on India's leading payment gateway processing billions of rupees in transactions every day.',
+        description: "Work on India's leading payment gateway processing billions of rupees in transactions every day.",
         featured: false
       },
       {
@@ -563,7 +563,7 @@ const Opportunities = {
         applyUrl: 'https://about.gitlab.com/jobs/all-jobs/',
         deadline: getDeadline(22),
         deadlineDays: 22,
-        description: 'Collaborate with an all-remote global team maintaining the world's leading open DevOps platform.',
+        description: "Collaborate with an all-remote global team maintaining the world's leading open DevOps platform.",
         featured: true
       },
       {
@@ -651,7 +651,7 @@ const Opportunities = {
         applyUrl: 'https://www.linkedin.com/jobs/',
         deadline: getDeadline(20),
         deadlineDays: 20,
-        description: 'Develop low-latency market gateways and risk management software in India's premier financial hub.',
+        description: "Develop low-latency market gateways and risk management software in India's premier financial hub.",
         featured: false
       },
       {
