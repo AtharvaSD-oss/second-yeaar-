@@ -21,7 +21,7 @@ const Opportunities = {
   regions: {
     'all': { label: 'All Regions', states: [] },
     'India': {
-      label: '🇮🇳 India',
+      label: 'India',
       states: [
         { id: 'all', label: 'All States in India' },
         { id: 'Karnataka', label: 'Karnataka (Bengaluru)' },
@@ -36,7 +36,7 @@ const Opportunities = {
       ]
     },
     'United States': {
-      label: '🇺🇸 United States',
+      label: 'United States',
       states: [
         { id: 'all', label: 'All US States' },
         { id: 'California', label: 'California (Silicon Valley / SF)' },
@@ -57,7 +57,7 @@ const Opportunities = {
       ]
     },
     'Europe': {
-      label: '🇪🇺 Europe & UK',
+      label: 'Europe & UK',
       states: [
         { id: 'all', label: 'All European Locations' },
         { id: 'United Kingdom', label: 'United Kingdom (London)' },
@@ -299,7 +299,7 @@ const Opportunities = {
         applyUrl: 'https://razorpay.com/jobs/',
         deadline: getDeadline(21),
         deadlineDays: 21,
-        description: 'Work on India’s leading payment gateway processing billions of rupees in transactions every day.',
+        description: 'Work on India's leading payment gateway processing billions of rupees in transactions every day.',
         featured: false
       },
       {
@@ -441,7 +441,7 @@ const Opportunities = {
         category: 'web',
         platform: 'Wellfound',
         platformColor: '#000000',
-        logoText: '▲',
+        logoText: 'V',
         logoBg: '#000000',
         region: 'Remote',
         state: 'Global (Anywhere)',
@@ -563,7 +563,7 @@ const Opportunities = {
         applyUrl: 'https://about.gitlab.com/jobs/all-jobs/',
         deadline: getDeadline(22),
         deadlineDays: 22,
-        description: 'Collaborate with an all-remote global team maintaining the world’s leading open DevOps platform.',
+        description: 'Collaborate with an all-remote global team maintaining the world's leading open DevOps platform.',
         featured: true
       },
       {
@@ -651,7 +651,7 @@ const Opportunities = {
         applyUrl: 'https://www.linkedin.com/jobs/',
         deadline: getDeadline(20),
         deadlineDays: 20,
-        description: 'Develop low-latency market gateways and risk management software in India’s premier financial hub.',
+        description: 'Develop low-latency market gateways and risk management software in India's premier financial hub.',
         featured: false
       },
       {
@@ -661,7 +661,7 @@ const Opportunities = {
         category: 'swe',
         platform: 'Company Portal',
         platformColor: '#555555',
-        logoText: '',
+        logoText: 'AP',
         logoBg: '#000000',
         region: 'United States',
         state: 'California',
@@ -944,7 +944,7 @@ const Opportunities = {
         deadlineText = `Closing in ${daysLeft} days`;
       } else if (daysLeft <= 7) {
         deadlineBadgeClass = 'badge-warning';
-        deadlineText = `⏰ ${daysLeft} days left`;
+        deadlineText = `${daysLeft} days left`;
       }
 
       const skillsHtml = item.skills.slice(0, 4).map(skill => 

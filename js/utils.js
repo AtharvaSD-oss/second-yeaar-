@@ -288,11 +288,11 @@ const Utils = {
    * @returns {string} hex color
    */
   getCompanyColor(companyName) {
-    if (!companyName) return '#4F46E5';
+    if (!companyName) return '#2563EB';
     const colors = [
-      '#4F46E5', '#2563EB', '#0891B2', '#0D9488',
-      '#16A34A', '#D97706', '#EA580C', '#E11D48',
-      '#9333EA', '#475569'
+      '#2563EB', '#1D4ED8', '#0284C7', '#0D9488',
+      '#16A34A', '#D97706', '#EA580C', '#DC2626',
+      '#0F172A', '#475569'
     ];
     let hash = 0;
     for (let i = 0; i < companyName.length; i++) {

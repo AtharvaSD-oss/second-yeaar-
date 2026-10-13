@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="InternTrack - Smart Internship Application Tracker. Search internship opportunities from across the internet, apply on official platforms, and track applications with zero database.">
+    <meta name="description" content="InternTrack is a private, client-side internship application tracker and aggregator. Organize job applications, track interview rounds, monitor upcoming deadlines, and store all data locally with zero database.">
+  <meta property="og:title" content="InternTrack - Smart Internship Application Tracker">
+  <meta property="og:description" content="Organize job applications, track interview rounds, and monitor upcoming deadlines in one private local dashboard.">
+  <meta property="og:type" content="website">
+  <link rel="shortcut icon" href="assets/icons/favicon.svg">
   <title>InternTrack - Smart Internship Application Tracker</title>
 
   <!-- Google Fonts (Plus Jakarta Sans & Inter) -->
@@ -27,7 +31,7 @@
        TOP NAVIGATION BAR (3-PAGE APPLICATION - GLASS EFFECT)
        ==================================================================== -->
   <header class="app-top-nav">
-    <div class="brand-logo" onclick="App.navigateTo('search')" style="cursor: pointer;">
+    <a href="index.html" class="brand-logo" onclick="event.preventDefault(); App.navigateTo('search');" title="InternTrack Home">
       <div class="brand-icon-box">
         <i data-lucide="briefcase"></i>
       </div>
@@ -35,7 +39,7 @@
         <span class="brand-title">Intern<span>Track</span></span>
         <span class="brand-sub">Application Management</span>
       </div>
-    </div>
+    </a>
 
     <!-- 3 Main Numbered Navigation Tabs -->
     <nav class="nav-tabs">
@@ -60,6 +64,9 @@
 
     <!-- Header Actions -->
     <div class="header-actions">
+      <button id="mobile-menu-toggle-btn" class="btn-icon mobile-menu-toggle" onclick="App.openMobileMenu()" title="Open Navigation Menu" aria-label="Open Navigation Menu">
+        <i data-lucide="menu"></i>
+      </button>
       <button class="btn btn-primary btn-sm" onclick="Applications.openAddModal()" title="Add Custom Application">
         <i data-lucide="plus"></i>
         <span>Add Internship</span>
@@ -123,7 +130,7 @@
         <div class="hero-search-wrapper">
           <i data-lucide="search" class="hero-search-icon"></i>
           <input type="text" id="opps-search-input" class="hero-search-input" 
-                 placeholder="Search by job role, company name, or skills (e.g. Python, React, SDE, Remote...)"
+                 placeholder="Search role, company, or skill..."
                  autocomplete="off">
         </div>
 
@@ -284,7 +291,7 @@
           <!-- Search input -->
           <div class="filter-search-box">
             <i data-lucide="search"></i>
-            <input type="text" id="apps-search-input" placeholder="Search company, role, skill, location...">
+            <input type="text" id="apps-search-input" placeholder="Filter by company, role, or location...">
           </div>
 
           <!-- Status filter -->
@@ -354,20 +361,20 @@
     </section>
 
     <!-- ==============================================================
-         PAGE 3: ⏰ DEADLINES & INTERVIEWS
+         PAGE 3: DEADLINES & INTERVIEWS
          ============================================================== -->
     <section id="view-schedule" class="view-section">
       
-      <!-- Indigo-to-Violet Gradient Schedule Hero -->
+      <!-- Schedule Hero Banner -->
       <div class="tracker-hero-banner schedule-hero-banner">
-        <div class="tracker-hero-glow"></div>
+        
         <div class="tracker-hero-inner">
           <div class="hero-badge">
-            <span class="badge-dot pulse"></span>
+            <span class="badge-dot"></span>
             <span>Automated Countdowns & Multi-Round Interviews</span>
           </div>
           <h1 class="tracker-hero-title">
-            Upcoming Deadlines & <span class="gradient-text">Interviews</span> ⏰
+            Upcoming Deadlines & <span class="gradient-text">Interviews</span>
           </h1>
           <p class="tracker-hero-subtitle">
             Never miss an application closing date. Track technical, coding, HR, and managerial rounds with direct 1-click meeting join links.
@@ -405,7 +412,7 @@
       <div class="schedule-section-card">
         <div class="schedule-header">
           <div class="schedule-title-group">
-            <i data-lucide="video" class="text-purple"></i>
+            <i data-lucide="video" class="text-primary"></i>
             <div>
               <h3>Scheduled Interview Rounds</h3>
               <p class="text-xs text-muted">Chronological timeline of HR, technical, and coding rounds.</p>
@@ -462,21 +469,27 @@
 
   </main>
 
-  <!-- ====================================================================
-       APPLICATION FOOTER (LEGAL & CUSTOM DOMAIN METRICS)
+    <!-- ====================================================================
+       APPLICATION FOOTER (LEGAL, CONTACT & CUSTOM DOMAIN METRICS)
        ==================================================================== -->
   <footer class="app-footer">
     <div class="app-footer-inner">
-      <div class="footer-brand">
+      <a href="index.html" class="footer-brand" onclick="event.preventDefault(); App.navigateTo('search');" title="InternTrack Home">
         <div class="brand-icon-box" style="width: 28px; height: 28px;">
           <i data-lucide="briefcase" style="width: 15px; height: 15px;"></i>
         </div>
-        <span class="footer-copy">&copy; 2026 InternTrack. Client-Side Application Management.</span>
-      </div>
+        <span class="footer-copy">&copy; <span class="copyright-year">2026</span> InternTrack. Client-Side Application Management.</span>
+      </a>
 
       <div class="footer-links">
         <a href="privacy.html" class="footer-link">Privacy Policy</a>
         <a href="terms.html" class="footer-link">Terms and Conditions</a>
+        <a href="mailto:support@interntrack.org" class="footer-link">
+          <i data-lucide="mail"></i> support@interntrack.org
+        </a>
+        <a href="tel:+18005550199" class="footer-link">
+          <i data-lucide="phone"></i> +1 (800) 555-0199
+        </a>
         <a href="javascript:void(0)" onclick="App.openSettingsModal()" class="footer-link">Settings & Backups</a>
         <div class="footer-domain-badge" id="footer-domain-display">
           <span class="domain-status-dot"></span>
@@ -504,19 +517,19 @@
           <div class="form-grid-2">
             <div class="form-group">
               <label class="form-label" for="form-company">Company Name <span class="req">*</span></label>
-              <input type="text" id="form-company" class="form-input" placeholder="e.g. Google, Microsoft, TCS" required>
+              <input type="text" id="form-company" class="form-input" required>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="form-role">Job Role <span class="req">*</span></label>
-              <input type="text" id="form-role" class="form-input" placeholder="e.g. Software Engineering Intern" required>
+              <input type="text" id="form-role" class="form-input" required>
             </div>
           </div>
 
           <div class="form-grid-2">
             <div class="form-group">
               <label class="form-label" for="form-location">Location / City</label>
-              <input type="text" id="form-location" class="form-input" placeholder="e.g. Bengaluru, Mumbai, San Francisco">
+              <input type="text" id="form-location" class="form-input">
             </div>
 
             <div class="form-group">
@@ -533,9 +546,9 @@
             <div class="form-group">
               <label class="form-label" for="form-region">Region / Country</label>
               <select id="form-region" class="form-select">
-                <option value="India">🇮🇳 India</option>
-                <option value="United States">🇺🇸 United States</option>
-                <option value="Europe">🇪🇺 Europe / UK</option>
+                <option value="India">India</option>
+                <option value="United States">United States</option>
+                <option value="Europe">Europe / UK</option>
                 <option value="Remote">Worldwide Remote</option>
                 <option value="Other">Other</option>
               </select>
@@ -543,7 +556,7 @@
 
             <div class="form-group">
               <label class="form-label" for="form-state">State / Province</label>
-              <input type="text" id="form-state" class="form-input" placeholder="e.g. Karnataka, Maharashtra, California">
+              <input type="text" id="form-state" class="form-input">
             </div>
           </div>
 
@@ -562,18 +575,18 @@
           <div class="form-grid-2">
             <div class="form-group">
               <label class="form-label" for="form-stipend">Stipend / Salary</label>
-              <input type="text" id="form-stipend" class="form-input" placeholder="e.g. ₹40,000/month or $50/hr">
+              <input type="text" id="form-stipend" class="form-input">
             </div>
 
             <div class="form-group">
               <label class="form-label" for="form-duration">Duration</label>
-              <input type="text" id="form-duration" class="form-input" placeholder="e.g. 3 months, 6 months">
+              <input type="text" id="form-duration" class="form-input">
             </div>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="form-url">Application / Job URL</label>
-            <input type="url" id="form-url" class="form-input" placeholder="https://careers.company.com/job/123">
+            <input type="url" id="form-url" class="form-input">
           </div>
 
           <div class="form-grid-2">
@@ -645,25 +658,25 @@
               </div>
               <div class="form-group mb-2">
                 <label class="form-label text-xs" for="form-interview-meeting">Meeting Link</label>
-                <input type="url" id="form-interview-meeting" class="form-input" placeholder="https://meet.google.com/xyz">
+                <input type="url" id="form-interview-meeting" class="form-input">
               </div>
             </div>
 
             <div class="form-grid-2">
               <div class="form-group mb-0">
                 <label class="form-label text-xs" for="form-interview-interviewer">Interviewer Name / Role</label>
-                <input type="text" id="form-interview-interviewer" class="form-input" placeholder="e.g. Lead Engineer, Hiring Manager">
+                <input type="text" id="form-interview-interviewer" class="form-input">
               </div>
               <div class="form-group mb-0">
                 <label class="form-label text-xs" for="form-interview-notes">Prep Notes</label>
-                <input type="text" id="form-interview-notes" class="form-input" placeholder="e.g. Brush up DSA, System Design">
+                <input type="text" id="form-interview-notes" class="form-input">
               </div>
             </div>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="form-notes">General Notes</label>
-            <textarea id="form-notes" class="form-textarea" rows="3" placeholder="Referral details, hiring portal login credentials, recruiter notes..."></textarea>
+            <textarea id="form-notes" class="form-textarea" rows="3"></textarea>
           </div>
         </div>
 
@@ -742,7 +755,7 @@
           <p class="text-sm"><strong>Interviewer:</strong> <span id="details-interview-interviewer">--</span></p>
           <p class="text-sm mt-1"><strong>Prep Notes:</strong> <span id="details-interview-notes" class="text-muted">--</span></p>
           <div class="mt-2">
-            <a id="details-interview-join-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-xs btn-primary">
+            <a id="details-interview-join-btn" href="javascript:void(0)" target="_blank" rel="noopener noreferrer" class="btn btn-xs btn-primary" style="display: none;">
               <i data-lucide="video"></i> Join Meeting
             </a>
           </div>
@@ -773,7 +786,7 @@
             <option value="Withdrawn">Withdrawn</option>
           </select>
 
-          <a id="details-app-url-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline ml-auto">
+          <a id="details-app-url-btn" href="javascript:void(0)" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline ml-auto" style="display: none;">
             <i data-lucide="external-link"></i> Open Application Link
           </a>
         </div>
@@ -835,18 +848,18 @@
             </div>
             <div class="form-group">
               <label class="form-label" for="sched-interview-link">Meeting Link (Google Meet / Zoom / Teams)</label>
-              <input type="url" id="sched-interview-link" class="form-input" placeholder="https://meet.google.com/xyz">
+              <input type="url" id="sched-interview-link" class="form-input">
             </div>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="sched-interview-interviewer">Interviewer Name / Role</label>
-            <input type="text" id="sched-interview-interviewer" class="form-input" placeholder="e.g. John Doe, Senior Staff SWE">
+            <input type="text" id="sched-interview-interviewer" class="form-input">
           </div>
 
           <div class="form-group">
             <label class="form-label" for="sched-interview-notes">Round Notes & Prep Topics</label>
-            <textarea id="sched-interview-notes" class="form-textarea" rows="3" placeholder="Key topics: Data Structures, System Design, behavioral questions..."></textarea>
+            <textarea id="sched-interview-notes" class="form-textarea" rows="3"></textarea>
           </div>
         </div>
 
@@ -944,17 +957,17 @@
         <div class="modal-body">
           <div class="form-group">
             <label class="form-label" for="custom-link-company">Company Name <span class="req">*</span></label>
-            <input type="text" id="custom-link-company" class="form-input" placeholder="e.g. Swiggy, Zepto, OpenAI" required>
+            <input type="text" id="custom-link-company" class="form-input" required>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="custom-link-role">Job Title / Role <span class="req">*</span></label>
-            <input type="text" id="custom-link-role" class="form-input" placeholder="e.g. Frontend Engineer Intern" required>
+            <input type="text" id="custom-link-role" class="form-input" required>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="custom-link-url">Internship Application Link</label>
-            <input type="url" id="custom-link-url" class="form-input" placeholder="https://careers.example.com/apply">
+            <input type="url" id="custom-link-url" class="form-input">
           </div>
 
           <div class="form-grid-2">
@@ -971,14 +984,14 @@
 
             <div class="form-group">
               <label class="form-label" for="custom-link-state">State / Province</label>
-              <input type="text" id="custom-link-state" class="form-input" placeholder="e.g. Karnataka, California, Remote">
+              <input type="text" id="custom-link-state" class="form-input">
             </div>
           </div>
 
           <div class="form-grid-2">
             <div class="form-group">
               <label class="form-label" for="custom-link-stipend">Estimated Stipend</label>
-              <input type="text" id="custom-link-stipend" class="form-input" placeholder="e.g. ₹50,000/month">
+              <input type="text" id="custom-link-stipend" class="form-input">
             </div>
 
             <div class="form-group">
@@ -1009,6 +1022,95 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary modal-close-btn">Cancel</button>
         <button id="delete-modal-confirm-btn" class="btn btn-outline-danger">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- ====================================================================
+       MOBILE NAVIGATION DRAWER
+       ==================================================================== -->
+  <div id="mobile-drawer-overlay" class="mobile-drawer-overlay" aria-hidden="true" onclick="if(event.target === this) App.closeMobileMenu();">
+    <div class="mobile-drawer-container">
+      <div class="mobile-drawer-header">
+        <a href="index.html" class="brand-logo" onclick="event.preventDefault(); App.navigateTo('search'); App.closeMobileMenu();" title="InternTrack Home">
+          <div class="brand-icon-box">
+            <i data-lucide="briefcase"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">Intern<span>Track</span></span>
+            <span class="brand-sub">Navigation Menu</span>
+          </div>
+        </a>
+        <button id="mobile-drawer-close-btn" class="btn-icon" onclick="App.closeMobileMenu()" aria-label="Close menu">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="mobile-drawer-content">
+        <div class="drawer-nav-section">
+          <span class="drawer-section-title">Navigation Views</span>
+          <button class="drawer-nav-item" onclick="App.navigateTo('search'); App.closeMobileMenu();">
+            <i data-lucide="globe"></i>
+            <span>Search Internships</span>
+          </button>
+          <button class="drawer-nav-item" onclick="App.navigateTo('tracker'); App.closeMobileMenu();">
+            <i data-lucide="briefcase"></i>
+            <span>My Application Tracker</span>
+          </button>
+          <button class="drawer-nav-item" onclick="App.navigateTo('schedule'); App.closeMobileMenu();">
+            <i data-lucide="calendar-clock"></i>
+            <span>Deadlines & Interviews</span>
+          </button>
+        </div>
+
+        <div class="drawer-nav-section">
+          <span class="drawer-section-title">Quick Actions</span>
+          <button class="drawer-nav-item" onclick="Applications.openAddModal(); App.closeMobileMenu();">
+            <i data-lucide="plus-circle"></i>
+            <span>Add Custom Application</span>
+          </button>
+          <button class="drawer-nav-item" onclick="App.openTrackCustomLinkModal(); App.closeMobileMenu();">
+            <i data-lucide="link"></i>
+            <span>Track External Link</span>
+          </button>
+          <button class="drawer-nav-item" onclick="App.openSettingsModal(); App.closeMobileMenu();">
+            <i data-lucide="settings"></i>
+            <span>Settings & Data Backup</span>
+          </button>
+          <a href="InternTrack_Project_Guide.pdf" download="InternTrack_Project_Guide.pdf" class="drawer-nav-item">
+            <i data-lucide="file-text"></i>
+            <span>Project Guide (PDF)</span>
+          </a>
+        </div>
+
+        <div class="drawer-nav-section">
+          <span class="drawer-section-title">Support & Inquiries</span>
+          <a href="mailto:support@interntrack.org" class="drawer-nav-item">
+            <i data-lucide="mail"></i>
+            <span>support@interntrack.org</span>
+          </a>
+          <a href="tel:+18005550199" class="drawer-nav-item">
+            <i data-lucide="phone"></i>
+            <span>+1 (800) 555-0199</span>
+          </a>
+        </div>
+
+        <div class="drawer-nav-section">
+          <span class="drawer-section-title">Legal Pages</span>
+          <a href="privacy.html" class="drawer-nav-item">
+            <i data-lucide="shield"></i>
+            <span>Privacy Policy</span>
+          </a>
+          <a href="terms.html" class="drawer-nav-item">
+            <i data-lucide="file-check"></i>
+            <span>Terms and Conditions</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="mobile-drawer-footer">
+        <span class="text-xs text-muted">&copy; <span class="copyright-year">2026</span> InternTrack.</span>
       </div>
     </div>
   </div>

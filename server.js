@@ -25,6 +25,8 @@ const server = http.createServer((req, res) => {
   let reqPath = req.url.split('?')[0];
   if (reqPath === '/') {
     reqPath = '/index.html';
+  } else if (reqPath === '/favicon.ico') {
+    reqPath = '/assets/icons/favicon.svg';
   }
 
   const safePath = path.normalize(reqPath).replace(/^(\.\.[\/\\])+/, '');
@@ -32,8 +34,20 @@ const server = http.createServer((req, res) => {
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.end('404 Not Found');
+      // Serve custom 404.html page if available
+      const notFoundPath = path.join(ROOT_DIR, '404.html');
+      fs.readFile(notFoundPath, (err404, data404) => {
+        if (!err404 && data404) {
+          res.writeHead(404, {
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Access-Control-Allow-Origin': '*'
+          });
+          res.end(data404);
+        } else {
+          res.writeHead(404, { 'Content-Type': 'text/plain' });
+          res.end('404 Not Found');
+        }
+      });
       return;
     }
 

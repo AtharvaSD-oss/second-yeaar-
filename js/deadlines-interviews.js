@@ -62,7 +62,7 @@ const DeadlinesInterviews = {
     if (withDeadlines.length === 0) {
       container.innerHTML = `
         <div class="empty-state-card" style="padding: 2.5rem 1.5rem;">
-          <div class="empty-icon-wrapper" style="font-size: 2.2rem;">⏰</div>
+          <div class="empty-icon-wrapper" style="font-size: 2.2rem;"><i data-lucide="clock"></i></div>
           <h4 class="empty-title">No Application Deadlines Tracked</h4>
           <p class="empty-subtitle">Set deadlines when saving or tracking internships to see automated countdowns here.</p>
           <button class="btn btn-primary btn-sm" onclick="App.navigateTo('tracker'); Applications.openAddModal();">
@@ -99,7 +99,7 @@ const DeadlinesInterviews = {
         urgencyText = `${dInfo.daysLeft} days remaining`;
       } else if (dInfo.daysLeft <= 7) {
         badgeClass = 'badge-warning';
-        urgencyText = `⏰ ${dInfo.daysLeft} days remaining`;
+        urgencyText = `${dInfo.daysLeft} days remaining`;
       }
 
       html += `

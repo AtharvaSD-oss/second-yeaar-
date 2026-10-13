@@ -13,6 +13,8 @@ const App = {
 
   init() {
     this.initCustomDomain();
+    this.initMobileMenu();
+    this.initCopyrightYear();
     this.applySavedTheme();
     this.initNavigation();
     this.initThemeToggle();
@@ -214,6 +216,63 @@ const App = {
     }
   },
 
+  
+  initMobileMenu() {
+    const toggleBtn = document.getElementById('mobile-menu-toggle-btn');
+    const closeBtn = document.getElementById('mobile-drawer-close-btn');
+    const overlay = document.getElementById('mobile-drawer-overlay');
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.openMobileMenu();
+      });
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.closeMobileMenu();
+      });
+    }
+
+    if (overlay) {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          this.closeMobileMenu();
+        }
+      });
+    }
+  },
+
+  openMobileMenu() {
+    const drawer = document.getElementById('mobile-drawer-overlay');
+    if (drawer) {
+      drawer.classList.add('active');
+      drawer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+    }
+  },
+
+  closeMobileMenu() {
+    const drawer = document.getElementById('mobile-drawer-overlay');
+    if (drawer) {
+      drawer.classList.remove('active');
+      drawer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+  },
+
+  initCopyrightYear() {
+    const year = new Date().getFullYear();
+    document.querySelectorAll('.copyright-year').forEach(el => {
+      el.textContent = year;
+    });
+  },
+
   initNavigation() {
     // Click bindings for navigation tab buttons
     document.querySelectorAll('.nav-tab-btn, .mobile-tab-btn').forEach(btn => {
@@ -352,6 +411,7 @@ const App = {
     const stipend = document.getElementById('custom-link-stipend')?.value.trim();
     const region = document.getElementById('custom-link-region')?.value || 'India';
     const state = document.getElementById('custom-link-state')?.value.trim() || '';
+    const deadline = document.getElementById('custom-link-deadline')?.value || '';
 
     if (!company || !role) {
       Utils.showToast('Company Name and Job Role are required.', 'error');
@@ -397,6 +457,7 @@ const App = {
     document.addEventListener('keydown', (e) => {
       // Escape closes modal
       if (e.key === 'Escape') {
+        this.closeMobileMenu();
         const activeModal = document.querySelector('.modal-overlay.active');
         if (activeModal) {
           activeModal.classList.remove('active');

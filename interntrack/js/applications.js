@@ -404,7 +404,7 @@ const Applications = {
         <table class="apps-table">
           <thead>
             <tr>
-              <th width="40">⭐</th>
+              <th width="40"><i data-lucide="star"></i></th>
               <th>Company & Role</th>
               <th>Status</th>
               <th>Priority</th>
@@ -484,7 +484,7 @@ const Applications = {
       const star = document.getElementById('details-fav-star');
       if (star) star.classList.toggle('active', newState);
     }
-    Utils.showToast(newState ? 'Added to favorites ⭐' : 'Removed from favorites', 'info');
+    Utils.showToast(newState ? 'Added to favorites.' : 'Removed from favorites', 'info');
   },
 
   /**
