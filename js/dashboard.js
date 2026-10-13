@@ -174,7 +174,7 @@ const Dashboard = {
       container.innerHTML = `
         <div class="empty-widget">
           <i data-lucide="video" class="empty-icon text-muted"></i>
-          <p class="empty-title">🎯 No upcoming interviews</p>
+          <p class="empty-title">No upcoming interviews</p>
           <span class="empty-desc">Interviews you schedule will appear right here.</span>
         </div>
       `;
@@ -303,7 +303,7 @@ const Dashboard = {
         <tr>
           <td colspan="6" class="text-center py-4">
             <div class="empty-state-small">
-              <p>🎓 No internship applications recorded yet.</p>
+              <p>No internship applications recorded yet.</p>
               <button class="btn btn-sm btn-primary mt-2" onclick="Applications.openAddModal()">
                 <i data-lucide="plus"></i> Add Your First Internship
               </button>
@@ -363,7 +363,7 @@ const Dashboard = {
       container.innerHTML = `
         <div class="card p-4 insight-card-banner">
           <div class="insight-banner-content">
-            <div class="insight-icon-box">💡</div>
+            <div class="insight-icon-box"><i data-lucide="info"></i></div>
             <div>
               <h4 class="font-bold">Welcome to InternTrack!</h4>
               <p class="text-sm text-muted">Add your applications or load demo data to unlock personalized skill analytics, response rate benchmarks, and AI recommendations.</p>
@@ -407,7 +407,7 @@ const Dashboard = {
       <div class="insights-grid">
         <div class="insight-pill-card">
           <div class="insight-header">
-            <span class="insight-emoji">💡</span>
+            
             <span class="insight-title">Your Strongest Skill</span>
           </div>
           <p class="insight-body">
@@ -417,7 +417,7 @@ const Dashboard = {
 
         <div class="insight-pill-card">
           <div class="insight-header">
-            <span class="insight-emoji">📈</span>
+            
             <span class="insight-title">Interview Rate</span>
           </div>
           <p class="insight-body">
@@ -427,7 +427,7 @@ const Dashboard = {
 
         <div class="insight-pill-card">
           <div class="insight-header">
-            <span class="insight-emoji">🎯</span>
+            
             <span class="insight-title">Preferred Work Mode</span>
           </div>
           <p class="insight-body">
@@ -437,7 +437,7 @@ const Dashboard = {
 
         <div class="insight-pill-card">
           <div class="insight-header">
-            <span class="insight-emoji">💪</span>
+            
             <span class="insight-title">Recommendation</span>
           </div>
           <p class="insight-body">

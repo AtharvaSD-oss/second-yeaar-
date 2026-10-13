@@ -1,9 +1,9 @@
 /**
  * InternTrack - Core Application Orchestrator
  * Controls the 3-Page Single Page Application:
- *   Page 1: 🌐 Search Internships (collected from across the web)
- *   Page 2: 📋 My Application Tracker (CRUD, statuses, notes, filter)
- *   Page 3: ⏰ Deadlines & Interviews (schedule, countdowns, join links, funnel)
+ *   Page 1: Search Internships (collected from across the web)
+ *   Page 2: My Application Tracker (CRUD, statuses, notes, filter)
+ *   Page 3: Deadlines & Interviews (schedule, countdowns, join links, funnel)
  * 
  * 100% Client-Side LocalStorage Persistence - ZERO DATABASE.
  */
@@ -12,6 +12,7 @@ const App = {
   activeSection: 'search',
 
   init() {
+    this.initCustomDomain();
     this.applySavedTheme();
     this.initNavigation();
     this.initThemeToggle();
@@ -32,10 +33,7 @@ const App = {
     });
 
     // Check if initial storage is empty; if so, populate demo data so the app isn't blank
-    const currentApps = Storage.getAll();
-    if (currentApps.length === 0) {
-      Storage.loadDemoData(true);
-    }
+    // Clean zero-database start without fake records. Users can load sample data in Settings.
 
     // Check initial URL hash or default to Page 1: Search Internships
     const initHash = (window.location.hash || '').replace('#', '');
@@ -154,6 +152,68 @@ const App = {
   /**
    * Navigation Listeners
    */
+  
+  initCustomDomain() {
+    const savedDomain = localStorage.getItem('interntrack_custom_domain') || '';
+    const input = document.getElementById('custom-domain-input');
+    const statusBadge = document.getElementById('custom-domain-status');
+    const footerText = document.getElementById('footer-domain-text');
+
+    if (input) input.value = savedDomain;
+    this.updateDomainDisplay(savedDomain);
+
+    const saveBtn = document.getElementById('save-domain-btn');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        const domain = (document.getElementById('custom-domain-input')?.value || '').trim();
+        this.saveCustomDomain(domain);
+      });
+    }
+  },
+
+  saveCustomDomain(domain) {
+    if (!domain) {
+      localStorage.removeItem('interntrack_custom_domain');
+      Utils.showToast('Custom domain removed. Using default host.', 'info');
+      this.updateDomainDisplay('');
+      return;
+    }
+
+    // Basic domain validation
+    const domainRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+    if (!domainRegex.test(domain) && domain !== 'localhost' && !domain.startsWith('localhost:')) {
+      Utils.showToast('Please enter a valid domain format (e.g., tracker.domain.com)', 'warning');
+      return;
+    }
+
+    localStorage.setItem('interntrack_custom_domain', domain);
+    this.updateDomainDisplay(domain);
+    Utils.showToast('Custom domain connected: ' + domain, 'success');
+  },
+
+  updateDomainDisplay(domain) {
+    const statusBadge = document.getElementById('custom-domain-status');
+    const footerText = document.getElementById('footer-domain-text');
+
+    if (domain) {
+      if (statusBadge) {
+        statusBadge.textContent = 'Connected: ' + domain;
+        statusBadge.className = 'badge badge-status-selected';
+      }
+      if (footerText) {
+        footerText.textContent = 'Domain: ' + domain + ' (Connected)';
+      }
+    } else {
+      if (statusBadge) {
+        statusBadge.textContent = 'Not Configured';
+        statusBadge.className = 'badge badge-status-saved';
+      }
+      if (footerText) {
+        footerText.textContent = 'Domain: ' + (window.location.host || 'localhost:3000');
+      }
+    }
+  },
+
   initNavigation() {
     // Click bindings for navigation tab buttons
     document.querySelectorAll('.nav-tab-btn, .mobile-tab-btn').forEach(btn => {
@@ -270,7 +330,7 @@ const App = {
    */
   loadDemoData() {
     Storage.loadDemoData(false);
-    Utils.showToast('Realistic demo internships loaded! 🎉', 'success');
+    Utils.showToast('Sample demo internships loaded.', 'success');
     this.refreshCurrentView();
     this.updateNavBadges();
   },
@@ -399,12 +459,12 @@ const App = {
 
     apps.forEach(app => {
       if (app.interview && app.interview.date === todayStr) {
-        new Notification(`🎯 Interview Today: ${app.company}`, {
+        new Notification(`Interview Today: ${app.company}`, {
           body: `${app.interview.round} round scheduled for today.`
         });
       }
       if (app.deadline === todayStr) {
-        new Notification(`⚠️ Application Deadline Today!`, {
+        new Notification(`Application Deadline Today!`, {
           body: `Deadline for ${app.company} (${app.role}) is today.`
         });
       }
@@ -419,7 +479,7 @@ const App = {
     if (exportBtn) {
       exportBtn.addEventListener('click', () => {
         Storage.exportJSON();
-        Utils.showToast('Backup JSON downloaded! 📦', 'success');
+        Utils.showToast('Backup JSON downloaded.', 'success');
       });
     }
 
@@ -452,7 +512,7 @@ const App = {
       demoBtn.addEventListener('click', () => {
         if (confirm('Load realistic sample internships (Google, Microsoft, TCS, etc.)?')) {
           Storage.loadDemoData(false);
-          Utils.showToast('Sample internships loaded! 🎉', 'success');
+          Utils.showToast('Sample internships loaded.', 'success');
           this.refreshCurrentView();
           this.closeSettingsModal();
         }

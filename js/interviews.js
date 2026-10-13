@@ -41,7 +41,7 @@ const Interviews = {
     if (interviewItems.length === 0) {
       container.innerHTML = `
         <div class="empty-state-card">
-          <div class="empty-icon-wrapper">🎯</div>
+          <div class="empty-icon-wrapper"><i data-lucide="video"></i></div>
           <h3 class="empty-title">No scheduled interviews</h3>
           <p class="empty-subtitle">When recruiters schedule HR, technical, or coding rounds, attach them to your applications to keep your interview timeline sharp.</p>
           <button class="btn btn-primary" onclick="Interviews.openQuickScheduleModal()">
@@ -190,14 +190,14 @@ const Interviews = {
     if (selectGroup && select) {
       selectGroup.style.display = 'block';
       select.innerHTML = apps.map(a => 
-        `<option value="${a.id}">${Utils.escapeHtml(a.company)} – ${Utils.escapeHtml(a.role)} (${a.status})</option>`
+        `<option value="${a.id}">${Utils.escapeHtml(a.company)} - ${Utils.escapeHtml(a.role)} (${a.status})</option>`
       ).join('');
       select.onchange = (e) => {
         const pickedId = e.target.value;
         Applications.activeModalAppId = pickedId;
         const app = Storage.getById(pickedId);
         if (app) {
-          document.getElementById('modal-interview-app-name').textContent = `${app.company} – ${app.role}`;
+          document.getElementById('modal-interview-app-name').textContent = `${app.company} - ${app.role}`;
           document.getElementById('modal-interview-date').value = app.interview?.date || new Date().toISOString().split('T')[0];
           document.getElementById('modal-interview-time').value = app.interview?.time || '11:00';
           document.getElementById('modal-interview-round').value = app.interview?.round || 'Technical';

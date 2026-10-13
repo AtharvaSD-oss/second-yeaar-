@@ -126,7 +126,7 @@ const Utils = {
       return {
         daysLeft: 0,
         status: 'urgent',
-        label: '⚠️ Due Today!',
+        label: 'Due Today',
         badgeClass: 'badge-urgent',
         icon: 'alert-triangle'
       };
@@ -134,7 +134,7 @@ const Utils = {
       return {
         daysLeft: 1,
         status: 'urgent',
-        label: '⚠️ Tomorrow (1 day remaining)',
+        label: 'Tomorrow (1 day remaining)',
         badgeClass: 'badge-urgent',
         icon: 'alert-triangle'
       };
@@ -142,7 +142,7 @@ const Utils = {
       return {
         daysLeft: 2,
         status: 'urgent',
-        label: '⚠️ 2 days remaining',
+        label: '2 days remaining',
         badgeClass: 'badge-urgent',
         icon: 'clock'
       };
@@ -168,7 +168,7 @@ const Utils = {
   /**
    * Get Greeting based on current hour
    * @param {string} name 
-   * @returns {string} e.g. "Good evening, Student 👋"
+   * @returns {string} e.g. "Good evening, Student"
    */
   getGreeting(name = 'Student') {
     const hour = new Date().getHours();
@@ -178,7 +178,7 @@ const Utils = {
     } else if (hour >= 17 || hour < 5) {
       timeGreeting = 'Good evening';
     }
-    return `${timeGreeting}, ${name} 👋`;
+    return `${timeGreeting}, ${name}`;
   },
 
   /**
@@ -230,13 +230,13 @@ const Utils = {
    * Status visual metadata dictionary
    */
   statusConfig: {
-    'Saved': { color: '#F97316', bg: 'rgba(249, 115, 22, 0.12)', border: '#FDBA74', icon: 'bookmark', dot: '🟠', class: 'status-saved' },
-    'Applied': { color: '#EAB308', bg: 'rgba(234, 179, 8, 0.12)', border: '#FDE047', icon: 'send', dot: '🟡', class: 'status-applied' },
-    'Under Review': { color: '#0284C7', bg: 'rgba(2, 132, 199, 0.12)', border: '#7DD3FC', icon: 'file-search', dot: '🔵', class: 'status-review' },
-    'Interview': { color: '#8B5CF6', bg: 'rgba(139, 92, 246, 0.12)', border: '#C4B5FD', icon: 'video', dot: '🟣', class: 'status-interview' },
-    'Selected': { color: '#16A34A', bg: 'rgba(22, 163, 74, 0.14)', border: '#86EFAC', icon: 'check-circle-2', dot: '🟢', class: 'status-selected' },
-    'Rejected': { color: '#DC2626', bg: 'rgba(220, 38, 38, 0.12)', border: '#FCA5A5', icon: 'x-circle', dot: '🔴', class: 'status-rejected' },
-    'Withdrawn': { color: '#64748B', bg: 'rgba(100, 116, 139, 0.12)', border: '#CBD5E1', icon: 'slash', dot: '⚪', class: 'status-withdrawn' }
+    'Saved': { color: '#F97316', bg: 'rgba(249, 115, 22, 0.12)', border: '#FDBA74', icon: 'bookmark', dot: '•', class: 'status-saved' },
+    'Applied': { color: '#EAB308', bg: 'rgba(234, 179, 8, 0.12)', border: '#FDE047', icon: 'send', dot: '•', class: 'status-applied' },
+    'Under Review': { color: '#0284C7', bg: 'rgba(2, 132, 199, 0.12)', border: '#7DD3FC', icon: 'file-search', dot: '•', class: 'status-review' },
+    'Interview': { color: '#0284C7', bg: 'rgba(2, 132, 199, 0.12)', border: '#7DD3FC', icon: 'video', dot: '•', class: 'status-interview' },
+    'Selected': { color: '#16A34A', bg: 'rgba(22, 163, 74, 0.14)', border: '#86EFAC', icon: 'check-circle-2', dot: '•', class: 'status-selected' },
+    'Rejected': { color: '#DC2626', bg: 'rgba(220, 38, 38, 0.12)', border: '#FCA5A5', icon: 'x-circle', dot: '•', class: 'status-rejected' },
+    'Withdrawn': { color: '#64748B', bg: 'rgba(100, 116, 139, 0.12)', border: '#CBD5E1', icon: 'slash', dot: '•', class: 'status-withdrawn' }
   },
 
   /**
@@ -254,7 +254,7 @@ const Utils = {
    * @returns {string} HTML string
    */
   renderStatusBadge(status) {
-    const config = this.statusConfig[status] || { dot: '⚪', class: 'status-withdrawn' };
+    const config = this.statusConfig[status] || { dot: '•', class: 'status-withdrawn' };
     return `<span class="badge ${config.class}"><span class="badge-dot"></span>${this.escapeHtml(status || 'Saved')}</span>`;
   },
 
@@ -431,7 +431,7 @@ const Utils = {
     }
 
     // Common Company Patterns
-    const companyMatch = text.match(/(?:Company|Organization|At|About)\s*[:–-]?\s*([A-Z][A-Za-z0-9&.\s]{2,30})/);
+    const companyMatch = text.match(/(?:Company|Organization|At|About)\s*[:-]?\s*([A-Z][A-Za-z0-9&.\s]{2,30})/);
     if (companyMatch && companyMatch[1]) {
       company = companyMatch[1].trim();
     }

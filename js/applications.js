@@ -257,7 +257,7 @@ const Applications = {
       if (allApps.length === 0) {
         container.innerHTML = `
           <div class="empty-state-card">
-            <div class="empty-icon-wrapper">🎓</div>
+            <div class="empty-icon-wrapper"><i data-lucide="briefcase"></i></div>
             <h3 class="empty-title">No internships yet</h3>
             <p class="empty-subtitle">Start tracking your internship applications, interview rounds, and offers in one organized dashboard.</p>
             <div class="empty-actions">
@@ -273,7 +273,7 @@ const Applications = {
       } else {
         container.innerHTML = `
           <div class="empty-state-card">
-            <div class="empty-icon-wrapper">🔍</div>
+            <div class="empty-icon-wrapper"><i data-lucide="search"></i></div>
             <h3 class="empty-title">No matching applications</h3>
             <p class="empty-subtitle">Try adjusting or clearing your search filters to find what you're looking for.</p>
             <button class="btn btn-secondary mt-3" onclick="Applications.resetFilters()">
@@ -447,7 +447,7 @@ const Applications = {
           <td>${Utils.renderWorkModeBadge(app.workMode)}</td>
           <td><span class="text-sm">${Utils.formatDate(app.applicationDate)}</span></td>
           <td>
-            ${app.deadline ? `<span class="badge ${dInfo.badgeClass} text-xs">${Utils.escapeHtml(dInfo.label)}</span>` : '<span class="text-muted text-xs">—</span>'}
+            ${app.deadline ? `<span class="badge ${dInfo.badgeClass} text-xs">${Utils.escapeHtml(dInfo.label)}</span>` : '<span class="text-muted text-xs">-</span>'}
           </td>
           <td><span class="text-sm font-medium">${Utils.escapeHtml(Utils.formatStipend(app.stipend))}</span></td>
           <td class="text-right table-actions-cell">
@@ -543,7 +543,7 @@ const Applications = {
     this.activeModalAppId = id;
 
     const titleEl = document.getElementById('app-modal-title');
-    if (titleEl) titleEl.textContent = `Edit – ${app.company}`;
+    if (titleEl) titleEl.textContent = `Edit - ${app.company}`;
 
     // Populate form fields
     document.getElementById('form-company').value = app.company || '';
@@ -722,7 +722,7 @@ const Applications = {
 
     this.hideModal('app-edit-modal');
     this.render();
-    Utils.showToast(this.activeModalAppId ? 'Application updated successfully!' : 'Internship added to tracker! 🚀', 'success');
+    Utils.showToast(this.activeModalAppId ? 'Application updated successfully.' : 'Internship added to tracker.', 'success');
 
     if (res.warning) {
       Utils.showToast(`Notice: ${res.warning}`, 'warning');

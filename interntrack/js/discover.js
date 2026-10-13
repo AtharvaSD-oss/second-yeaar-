@@ -24,7 +24,7 @@ const Discover = {
       applicationUrl: 'https://www.google.com/about/careers/applications/jobs/results/?q=software%20engineering%20intern',
       deadline: '2026-11-15',
       skills: ['Python', 'C++', 'Data Structures', 'Algorithms', 'Git'],
-      description: 'Google’s Software Engineering internship is an 8–24 week program for students pursuing a Bachelor’s or Master’s in Computer Science. Focuses on scalable algorithms and distributed cloud systems.',
+      description: 'Google’s Software Engineering internship is an 8-24 week program for students pursuing a Bachelor’s or Master’s in Computer Science. Focuses on scalable algorithms and distributed cloud systems.',
       eligibility: 'Pre-final and final year B.Tech/B.E/Dual Degree students.',
       verified: true
     },
@@ -260,7 +260,7 @@ const Discover = {
     if (list.length === 0) {
       container.innerHTML = `
         <div class="empty-state-card" style="grid-column: 1 / -1;">
-          <div class="empty-icon-wrapper">🔍</div>
+          <div class="empty-icon-wrapper"></div>
           <h3 class="empty-title">No matching opportunities found</h3>
           <p class="empty-subtitle">Try selecting another domain or clearing your search query.</p>
         </div>

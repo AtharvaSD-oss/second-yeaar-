@@ -19,11 +19,11 @@ const Opportunities = {
 
   // Regions & States Hierarchy
   regions: {
-    'all': { label: '🌐 All Regions', states: [] },
+    'all': { label: 'All Regions', states: [] },
     'India': {
       label: '🇮🇳 India',
       states: [
-        { id: 'all', label: '📍 All States in India' },
+        { id: 'all', label: 'All States in India' },
         { id: 'Karnataka', label: 'Karnataka (Bengaluru)' },
         { id: 'Maharashtra', label: 'Maharashtra (Mumbai / Pune)' },
         { id: 'Telangana', label: 'Telangana (Hyderabad)' },
@@ -38,7 +38,7 @@ const Opportunities = {
     'United States': {
       label: '🇺🇸 United States',
       states: [
-        { id: 'all', label: '📍 All US States' },
+        { id: 'all', label: 'All US States' },
         { id: 'California', label: 'California (Silicon Valley / SF)' },
         { id: 'Washington', label: 'Washington (Seattle / Redmond)' },
         { id: 'New York', label: 'New York (NYC)' },
@@ -47,9 +47,9 @@ const Opportunities = {
       ]
     },
     'Remote': {
-      label: '🌍 Worldwide Remote',
+      label: 'Worldwide Remote',
       states: [
-        { id: 'all', label: '📍 All Remote Locations' },
+        { id: 'all', label: 'All Remote Locations' },
         { id: 'Global (Anywhere)', label: 'Global (Work from Anywhere)' },
         { id: 'Remote Americas', label: 'Remote Americas' },
         { id: 'Remote Europe', label: 'Remote Europe / EMEA' },
@@ -59,7 +59,7 @@ const Opportunities = {
     'Europe': {
       label: '🇪🇺 Europe & UK',
       states: [
-        { id: 'all', label: '📍 All European Locations' },
+        { id: 'all', label: 'All European Locations' },
         { id: 'United Kingdom', label: 'United Kingdom (London)' },
         { id: 'Germany', label: 'Germany (Berlin / Munich)' },
         { id: 'Netherlands', label: 'Netherlands (Amsterdam)' }
@@ -112,7 +112,7 @@ const Opportunities = {
     let statesList = [];
     if (regionKey === 'all') {
       statesList = [
-        { id: 'all', label: '📍 All States / Locations' },
+        { id: 'all', label: 'All States / Locations' },
         { id: 'Karnataka', label: 'Karnataka (Bengaluru)' },
         { id: 'Maharashtra', label: 'Maharashtra (Mumbai / Pune)' },
         { id: 'Telangana', label: 'Telangana (Hyderabad)' },
@@ -551,7 +551,7 @@ const Opportunities = {
         category: 'backend',
         platform: 'Company Portal',
         platformColor: '#FC6D26',
-        logoText: '🦊',
+        logoText: 'GL',
         logoBg: '#E24329',
         region: 'Remote',
         state: 'Global (Anywhere)',
@@ -919,7 +919,7 @@ const Opportunities = {
     if (filtered.length === 0) {
       container.innerHTML = `
         <div class="empty-state-card" style="grid-column: 1 / -1;">
-          <div class="empty-icon-wrapper">🔍</div>
+          <div class="empty-icon-wrapper"><i data-lucide="search"></i></div>
           <h3 class="empty-title">No internships matching your location or search</h3>
           <p class="empty-subtitle">We couldn't find openings for this Region, State, or keyword combination. Try clearing some filters.</p>
           <button class="btn btn-primary" onclick="Opportunities.resetFilters()">
@@ -941,7 +941,7 @@ const Opportunities = {
 
       if (daysLeft <= 3) {
         deadlineBadgeClass = 'badge-urgent';
-        deadlineText = `🔥 Closing in ${daysLeft} days!`;
+        deadlineText = `Closing in ${daysLeft} days`;
       } else if (daysLeft <= 7) {
         deadlineBadgeClass = 'badge-warning';
         deadlineText = `⏰ ${daysLeft} days left`;
@@ -964,7 +964,7 @@ const Opportunities = {
             <div class="opp-title-box">
               <div class="opp-company-name">
                 ${Utils.escapeHtml(item.company)}
-                ${item.featured ? '<span class="opp-hot-pill">Hot 🔥</span>' : ''}
+                ${item.featured ? '<span class="opp-hot-pill">Featured</span>' : ''}
               </div>
               <h3 class="opp-role-title">${Utils.escapeHtml(item.role)}</h3>
             </div>

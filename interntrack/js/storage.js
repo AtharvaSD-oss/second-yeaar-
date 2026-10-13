@@ -444,7 +444,7 @@ const Storage = {
         status: 'Selected',
         priority: 'High',
         favorite: true,
-        notes: 'Final Offer Letter Received! 🏆 HR discussion completed. Awaiting background verification check.',
+        notes: 'Final Offer Letter Received! HR discussion completed. Awaiting background verification check.',
         interview: {
           date: fmt(-5),
           time: '11:00',

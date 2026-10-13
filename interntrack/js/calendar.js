@@ -192,7 +192,7 @@ const Calendar = {
       if (app.deadline === dateStr) {
         dayEvents.push({
           type: 'Deadline',
-          title: `Application Deadline – ${app.company}`,
+          title: `Application Deadline - ${app.company}`,
           role: app.role,
           app: app,
           badgeClass: 'badge-urgent',
@@ -202,7 +202,7 @@ const Calendar = {
       if (app.interview && app.interview.date === dateStr) {
         dayEvents.push({
           type: 'Interview',
-          title: `${app.interview.round || 'Technical'} Interview – ${app.company}`,
+          title: `${app.interview.round || 'Technical'} Interview - ${app.company}`,
           role: app.role,
           time: app.interview.time,
           meetingLink: app.interview.meetingLink,
@@ -214,7 +214,7 @@ const Calendar = {
       if (app.followUpDate === dateStr) {
         dayEvents.push({
           type: 'Follow-up',
-          title: `Follow-up Due – ${app.company}`,
+          title: `Follow-up Due - ${app.company}`,
           role: app.role,
           app: app,
           badgeClass: 'badge-warning',

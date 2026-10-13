@@ -90,13 +90,13 @@ const DeadlinesInterviews = {
         urgencyText = 'Deadline Passed';
       } else if (dInfo.daysLeft === 0) {
         badgeClass = 'badge-urgent';
-        urgencyText = '🚨 Due Today!';
+        urgencyText = 'Due Today';
       } else if (dInfo.daysLeft === 1) {
         badgeClass = 'badge-urgent';
-        urgencyText = '⚠️ Due Tomorrow!';
+        urgencyText = 'Due Tomorrow';
       } else if (dInfo.daysLeft <= 2) {
         badgeClass = 'badge-urgent';
-        urgencyText = `⚠️ ${dInfo.daysLeft} days remaining`;
+        urgencyText = `${dInfo.daysLeft} days remaining`;
       } else if (dInfo.daysLeft <= 7) {
         badgeClass = 'badge-warning';
         urgencyText = `⏰ ${dInfo.daysLeft} days remaining`;
@@ -172,7 +172,7 @@ const DeadlinesInterviews = {
     if (interviewList.length === 0) {
       container.innerHTML = `
         <div class="empty-state-card" style="padding: 2.5rem 1.5rem;">
-          <div class="empty-icon-wrapper" style="font-size: 2.2rem;">🎯</div>
+          <div class="empty-icon-wrapper" style="font-size: 2.2rem;"><i data-lucide="calendar"></i></div>
           <h4 class="empty-title">No Interviews Scheduled Yet</h4>
           <p class="empty-subtitle">When recruiters send test or interview invitations, schedule them here to keep meeting links and times handy.</p>
           <button class="btn btn-primary btn-sm" onclick="DeadlinesInterviews.openScheduleModal()">
@@ -308,7 +308,7 @@ const DeadlinesInterviews = {
         </div>
 
         <div class="funnel-row">
-          <div class="funnel-label"><span>Offer / Selected 🏆</span> <strong>${selected}</strong></div>
+          <div class="funnel-label"><span>Offer / Selected</span> <strong>${selected}</strong></div>
           <div class="funnel-bar-track">
             <div class="funnel-bar-fill" style="width: ${total > 0 ? (selected / total * 100) : 0}%; background-color: #16A34A;"></div>
           </div>
@@ -331,7 +331,7 @@ const DeadlinesInterviews = {
     if (select) {
       select.innerHTML = apps.map(a => `
         <option value="${a.id}" ${appId && a.id === appId ? 'selected' : ''}>
-          ${Utils.escapeHtml(a.company)} — ${Utils.escapeHtml(a.role)} (${a.status})
+          ${Utils.escapeHtml(a.company)} - ${Utils.escapeHtml(a.role)} (${a.status})
         </option>
       `).join('');
     }

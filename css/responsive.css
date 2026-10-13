@@ -51,7 +51,7 @@
     justify-content: center;
     width: 16px;
     height: 16px;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-xs);
     font-size: 0.625rem;
     font-weight: 800;
     background-color: var(--primary-light);
