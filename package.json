@@ -1,7 +1,7 @@
 {
   "name": "interntrack",
   "version": "1.0.0",
-  "description": "InternTrack – Smart Internship Application Tracker (Zero Database)",
+  "description": "InternTrack - Smart Internship Application Tracker (Zero Database)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
