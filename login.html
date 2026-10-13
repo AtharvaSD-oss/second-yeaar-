@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Sign In & Cloud Database - InternTrack</title>
+  <meta name="description" content="Sign in or create an account for InternTrack with Supabase PostgreSQL cloud sync.">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="shortcut icon" href="assets/icons/favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .auth-page-container {
+      min-height: calc(100vh - 80px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1.5rem;
+    }
+    .auth-card {
+      max-width: 440px;
+      width: 100%;
+      background-color: var(--bg-card-solid);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem 2rem;
+      box-shadow: var(--shadow-lg);
+    }
+    .auth-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 1.5rem;
+    }
+    .auth-tab-btn {
+      flex: 1;
+      padding: 0.65rem 1rem;
+      border: none;
+      background: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      border-bottom: 2px solid transparent;
+      transition: all var(--transition-fast);
+    }
+    .auth-tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    .auth-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--primary);
+      background-color: var(--primary-light);
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-xs);
+      margin-bottom: 1.25rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation Header -->
+  <header class="app-top-nav">
+    <a href="index.html" class="brand-logo" title="Return to Dashboard">
+      <div class="brand-icon-box">
+        <i data-lucide="briefcase"></i>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">Intern<span>Track</span></span>
+        <span class="brand-sub">Application Management</span>
+      </div>
+    </a>
+
+    <div class="header-actions">
+      <a href="index.html" class="btn btn-secondary btn-sm">
+        <i data-lucide="arrow-left"></i>
+        <span>Return to Dashboard</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Login / Sign Up Page -->
+  <main class="auth-page-container">
+    <div class="auth-card">
+      <div class="text-center mb-3">
+        <div class="auth-badge">
+          <i data-lucide="database" style="width: 13px; height: 13px;"></i>
+          <span>Supabase Cloud Database</span>
+        </div>
+        <h1 class="page-title mb-1" id="page-auth-heading" style="font-size: 1.6rem;">Sign In to InternTrack</h1>
+        <p class="text-xs text-muted">Access your synced applications and interview schedule across devices.</p>
+      </div>
+
+      <!-- Auth Tabs -->
+      <div class="auth-tabs">
+        <button id="tab-login" class="auth-tab-btn active" onclick="setMode('login')">Sign In</button>
+        <button id="tab-signup" class="auth-tab-btn" onclick="setMode('signup')">Create Account</button>
+      </div>
+
+      <!-- Alert Box -->
+      <div id="auth-alert" class="card p-2 mb-3 text-xs" style="display: none;"></div>
+
+      <!-- Form -->
+      <form id="standalone-auth-form">
+        <div class="form-group" id="group-name" style="display: none;">
+          <label class="form-label" for="input-name">Full Name <span class="req">*</span></label>
+          <input type="text" id="input-name" class="form-input" placeholder="e.g. Atharva Dhole">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-email">Email Address <span class="req">*</span></label>
+          <input type="email" id="input-email" class="form-input" placeholder="name@example.com" required>
+        </div>
+
+        <div class="form-group mb-4">
+          <label class="form-label" for="input-password">Password <span class="req">*</span></label>
+          <input type="password" id="input-password" class="form-input" placeholder="Minimum 6 characters" minlength="6" required>
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn btn-primary" style="width: 100%;">
+          <span>Sign In to InternTrack</span>
+        </button>
+      </form>
+
+      <div class="mt-4 pt-3 text-center" style="border-top: 1px solid var(--border-color);">
+        <p class="text-xs text-muted mb-2">Want to use InternTrack without an account?</p>
+        <a href="index.html" class="text-xs font-semibold text-primary">Continue in Guest Mode (Local Storage Only) &rarr;</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/supabase-auth.js"></script>
+  <script>
+    let mode = 'login';
+
+    function setMode(newMode) {
+      mode = newMode;
+      const tabLogin = document.getElementById('tab-login');
+      const tabSignup = document.getElementById('tab-signup');
+      const nameGroup = document.getElementById('group-name');
+      const submitBtn = document.getElementById('submit-btn');
+      const heading = document.getElementById('page-auth-heading');
+      const alertBox = document.getElementById('auth-alert');
+
+      if (alertBox) alertBox.style.display = 'none';
+
+      if (mode === 'login') {
+        tabLogin.classList.add('active');
+        tabSignup.classList.remove('active');
+        nameGroup.style.display = 'none';
+        submitBtn.innerHTML = '<span>Sign In to InternTrack</span>';
+        heading.textContent = 'Sign In to InternTrack';
+      } else {
+        tabSignup.classList.add('active');
+        tabLogin.classList.remove('active');
+        nameGroup.style.display = 'block';
+        submitBtn.innerHTML = '<span>Create Supabase Account</span>';
+        heading.textContent = 'Create New Account';
+      }
+    }
+
+    document.getElementById('standalone-auth-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('input-email').value.trim();
+      const password = document.getElementById('input-password').value;
+      const name = document.getElementById('input-name').value.trim();
+      const alertBox = document.getElementById('auth-alert');
+      const submitBtn = document.getElementById('submit-btn');
+
+      if (alertBox) alertBox.style.display = 'none';
+      submitBtn.disabled = true;
+
+      try {
+        if (mode === 'login') {
+          const res = await Auth.login(email, password);
+          if (res.success) {
+            Utils.showToast('Login successful! Redirecting...', 'success');
+            setTimeout(() => { window.location.href = 'index.html#tracker'; }, 1000);
+          } else {
+            alertBox.style.display = 'block';
+            alertBox.style.backgroundColor = 'var(--danger-bg)';
+            alertBox.style.color = 'var(--danger)';
+            alertBox.style.borderColor = 'var(--danger-border)';
+            alertBox.textContent = res.error || 'Failed to sign in. Please verify your credentials.';
+            submitBtn.disabled = false;
+          }
+        } else {
+          const res = await Auth.signup(name, email, password);
+          if (res.success) {
+            if (res.autoLoggedIn) {
+              Utils.showToast('Account created! Redirecting to dashboard...', 'success');
+              setTimeout(() => { window.location.href = 'index.html#tracker'; }, 1000);
+            } else {
+              alertBox.style.display = 'block';
+              alertBox.style.backgroundColor = 'var(--primary-light)';
+              alertBox.style.color = 'var(--primary)';
+              alertBox.style.borderColor = 'var(--primary)';
+              alertBox.textContent = res.message || 'Account created successfully! Please verify your email.';
+              submitBtn.disabled = false;
+            }
+          } else {
+            alertBox.style.display = 'block';
+            alertBox.style.backgroundColor = 'var(--danger-bg)';
+            alertBox.style.color = 'var(--danger)';
+            alertBox.style.borderColor = 'var(--danger-border)';
+            alertBox.textContent = res.error || 'Failed to create account.';
+            submitBtn.disabled = false;
+          }
+        }
+      } catch (err) {
+        alertBox.style.display = 'block';
+        alertBox.style.backgroundColor = 'var(--danger-bg)';
+        alertBox.style.color = 'var(--danger)';
+        alertBox.style.borderColor = 'var(--danger-border)';
+        alertBox.textContent = err.message || 'An unexpected error occurred.';
+        submitBtn.disabled = false;
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.init();
+      if (Auth.user) {
+        window.location.href = 'index.html#tracker';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -24,6 +24,9 @@ const App = {
     this.initDataManagement();
 
     // Initialize submodules
+    if (window.Auth && typeof window.Auth.init === 'function') {
+      window.Auth.init();
+    }
     Opportunities.init();
     Applications.init();
 

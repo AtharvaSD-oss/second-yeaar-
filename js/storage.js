@@ -152,6 +152,9 @@ const Storage = {
     }
 
     const saved = this._saveAll(apps);
+    if (saved && typeof window !== 'undefined' && window.Auth && window.Auth.user && typeof window.Auth.saveCloudApplication === 'function') {
+      window.Auth.saveCloudApplication(record);
+    }
     return { success: saved, id, warning: val.warning };
   },
 
@@ -164,7 +167,11 @@ const Storage = {
     const apps = this.getAll();
     const filtered = apps.filter(a => a.id !== id);
     if (filtered.length === apps.length) return false;
-    return this._saveAll(filtered);
+    const res = this._saveAll(filtered);
+    if (res && typeof window !== 'undefined' && window.Auth && window.Auth.user && typeof window.Auth.deleteCloudApplication === 'function') {
+      window.Auth.deleteCloudApplication(id);
+    }
+    return res;
   },
 
   /**
@@ -178,7 +185,10 @@ const Storage = {
     if (!target) return false;
     target.favorite = !target.favorite;
     target.updatedAt = new Date().toISOString();
-    this._saveAll(apps);
+    const res = this._saveAll(apps);
+    if (res && typeof window !== 'undefined' && window.Auth && window.Auth.user && typeof window.Auth.saveCloudApplication === 'function') {
+      window.Auth.saveCloudApplication(target);
+    }
     return target.favorite;
   },
 
@@ -194,7 +204,11 @@ const Storage = {
     if (!target) return false;
     target.status = newStatus;
     target.updatedAt = new Date().toISOString();
-    return this._saveAll(apps);
+    const res = this._saveAll(apps);
+    if (res && typeof window !== 'undefined' && window.Auth && window.Auth.user && typeof window.Auth.saveCloudApplication === 'function') {
+      window.Auth.saveCloudApplication(target);
+    }
+    return res;
   },
 
   /**
@@ -219,7 +233,11 @@ const Storage = {
       target.status = 'Interview'; // Automatically promote status if interview added
     }
     target.updatedAt = new Date().toISOString();
-    return this._saveAll(apps);
+    const res = this._saveAll(apps);
+    if (res && typeof window !== 'undefined' && window.Auth && window.Auth.user && typeof window.Auth.saveCloudApplication === 'function') {
+      window.Auth.saveCloudApplication(target);
+    }
+    return res;
   },
 
   /**

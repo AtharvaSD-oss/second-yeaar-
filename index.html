@@ -20,7 +20,8 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
 
-  <!-- Lucide Icons CDN -->
+  <!-- Supabase JS Client & Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
@@ -67,6 +68,7 @@
       <button id="mobile-menu-toggle-btn" class="btn-icon mobile-menu-toggle" onclick="App.openMobileMenu()" title="Open Navigation Menu" aria-label="Open Navigation Menu">
         <i data-lucide="menu"></i>
       </button>
+      <div id="auth-header-container" class="d-flex align-items-center"></div>
       <button class="btn btn-primary btn-sm" onclick="Applications.openAddModal()" title="Add Custom Application">
         <i data-lucide="plus"></i>
         <span>Add Internship</span>
@@ -882,6 +884,21 @@
       <div class="modal-body">
         <div class="card p-3 mb-3" style="background-color: var(--bg-card-subtle);">
           <div class="d-flex align-items-center justify-between mb-2">
+            <h4 class="font-bold text-sm">Supabase Database & Authentication</h4>
+            <span class="badge badge-status-selected">PostgreSQL Sync</span>
+          </div>
+          <p class="text-xs text-muted mb-2">Sync your internship tracker to your Supabase PostgreSQL cloud database.</p>
+          <div id="settings-auth-status">
+            <span class="badge badge-status-saved">Guest Mode (Local Storage Only)</span>
+            <p class="text-xs text-muted mt-1">Sign in with Supabase to enable cloud database sync.</p>
+            <button class="btn btn-primary btn-xs mt-2" onclick="Auth.openModal('login')">
+              <i data-lucide="log-in" style="width: 13px; height: 13px;"></i> Sign In / Create Account
+            </button>
+          </div>
+        </div>
+
+        <div class="card p-3 mb-3" style="background-color: var(--bg-card-subtle);">
+          <div class="d-flex align-items-center justify-between mb-2">
             <h4 class="font-bold text-sm">Custom Domain Configuration</h4>
             <span id="custom-domain-status" class="badge badge-status-saved">Not Configured</span>
           </div>
@@ -1026,6 +1043,55 @@
     </div>
   </div>
 
+  <!-- Modal 7: Supabase Authentication Modal -->
+  <div id="auth-modal" class="modal-overlay">
+    <div class="modal-container modal-sm">
+      <div class="modal-header">
+        <div>
+          <h3 id="auth-modal-title" class="modal-title">Sign In to Your Account</h3>
+          <p class="text-xs text-muted">Sync your internships across devices with Supabase.</p>
+        </div>
+        <button type="button" class="modal-close-btn">&times;</button>
+      </div>
+
+      <div class="auth-tabs" style="display: flex; border-bottom: 1px solid var(--border-color); margin: 0 1.25rem 1rem 1.25rem;">
+        <button id="auth-tab-login" class="auth-tab-btn active" type="button" onclick="Auth.switchTab('login')">Sign In</button>
+        <button id="auth-tab-signup" class="auth-tab-btn" type="button" onclick="Auth.switchTab('signup')">Create Account</button>
+      </div>
+
+      <div id="auth-error-box" class="card p-2 mx-3 mb-2 text-xs" style="display: none; background-color: var(--danger-bg); color: var(--danger); border-color: var(--danger-border);"></div>
+
+      <form id="auth-form">
+        <div class="modal-body" style="padding-top: 0;">
+          <div class="form-group" id="auth-name-group" style="display: none;">
+            <label class="form-label" for="auth-name-input">Full Name <span class="req">*</span></label>
+            <input type="text" id="auth-name-input" class="form-input" placeholder="e.g. Atharva Dhole">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="auth-email-input">Email Address <span class="req">*</span></label>
+            <input type="email" id="auth-email-input" class="form-input" placeholder="name@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="auth-password-input">Password <span class="req">*</span></label>
+            <input type="password" id="auth-password-input" class="form-input" placeholder="Minimum 6 characters" minlength="6" required>
+          </div>
+        </div>
+
+        <div class="modal-footer" style="flex-direction: column; align-items: stretch; gap: 0.5rem;">
+          <button type="submit" id="auth-submit-btn" class="btn btn-primary" style="width: 100%;">
+            <span>Sign In to InternTrack</span>
+          </button>
+          <div class="d-flex justify-between align-items-center w-100 mt-1">
+            <a href="login.html" class="text-xs text-primary font-semibold">Open Dedicated Login Page &rarr;</a>
+            <button type="button" class="btn btn-secondary btn-xs modal-close-btn">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
   
   <!-- ====================================================================
        MOBILE NAVIGATION DRAWER
@@ -1074,6 +1140,10 @@
             <i data-lucide="link"></i>
             <span>Track External Link</span>
           </button>
+          <button class="drawer-nav-item" onclick="Auth.openModal('login'); App.closeMobileMenu();">
+            <i data-lucide="user"></i>
+            <span>Account & Database Sync</span>
+          </button>
           <button class="drawer-nav-item" onclick="App.openSettingsModal(); App.closeMobileMenu();">
             <i data-lucide="settings"></i>
             <span>Settings & Data Backup</span>
@@ -1119,10 +1189,11 @@
   <div id="toast-container"></div>
 
   <!-- ====================================================================
-       SCRIPTS (ZERO DATABASE - 100% CLIENT-SIDE LOCALSTORAGE)
+       SCRIPTS (HYBRID STORAGE & SUPABASE CLOUD SYNC)
        ==================================================================== -->
   <script src="js/utils.js"></script>
   <script src="js/storage.js"></script>
+  <script src="js/supabase-auth.js"></script>
   <script src="js/opportunities.js"></script>
   <script src="js/applications.js"></script>
   <script src="js/deadlines-interviews.js"></script>

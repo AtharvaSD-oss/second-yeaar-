@@ -2270,3 +2270,38 @@ button, input, select, textarea {
   border-top: 1px solid var(--border-color);
   background-color: var(--bg-card-subtle);
 }
+
+/* User Auth Pill in Navigation */
+.user-auth-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bg-card-subtle);
+  border: 1px solid var(--border-color);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-sm);
+}
+
+.user-avatar-initial {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-xs);
+  background-color: var(--primary);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.725rem;
+  font-weight: 700;
+}
+
+.user-email-text {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-main);
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
